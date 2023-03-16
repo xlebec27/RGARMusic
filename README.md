@@ -6,3 +6,5 @@
 - Парамонов А. Г.
 - Жуков Р. А.
 ## Документация
+### Miro
+https://miro.com/app/board/uXjVMdLLDW0=/

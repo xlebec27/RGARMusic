@@ -11,25 +11,24 @@
 
 ## Контактные данные
 
-**Аббасов Р. С (team lead)**
+**Аббасов Руслан Самирович (мегаглавный)**
 * Github: [@itsremor]()
 * Телеграм: [@ruslaneighteen](https://t.me/ruslaneighteen)
 * VK: [@ruslan.marrs](https://vk.com/ruslan.marrs)
 
-**Станкеев Г. М.**
+**Станкеев Герман Максимович**
 * Github: [@Stankeev11German](https://github.com/Stankeev11German)
 * Телеграм: [@ThECRaZ4](https://t.me/ThECRaZ4)
 * VK: [@stankeev99](https://vk.com/stankeev99)
 
-**Парамонов А. Г. **
+**Парамонов Артём Геннадьевич **
 * Github: [@xlebec27](https://github.com/xlebec27)
 * Телеграм: [@xlebec27](https://t.me/xlebec27)
 * VK: [@artjomprm](https://vk.com/artjomprm)
 
-**Жуков Р. А. **
+**Жуков Роман Андреевич **
 * Github: [@AgentRomanovsky](https://github.com/AgentRomanovsky)
 * Телеграм: [@AgentRomanovsky](https://t.me/AgentRomanovsky)
 * VK: [@agentromanovsky](https://vk.com/agentromanovsky)
-## Документация
-### Miro
+
 

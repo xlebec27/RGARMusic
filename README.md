@@ -21,12 +21,12 @@
 * Телеграм: [@ThECRaZ4](https://t.me/ThECRaZ4)
 * VK: [@stankeev99](https://vk.com/stankeev99)
 
-**Парамонов Артём Геннадьевич **
+**Парамонов Артём Геннадьевич**
 * Github: [@xlebec27](https://github.com/xlebec27)
 * Телеграм: [@xlebec27](https://t.me/xlebec27)
 * VK: [@artjomprm](https://vk.com/artjomprm)
 
-**Жуков Роман Андреевич **
+**Жуков Роман Андреевич**
 * Github: [@AgentRomanovsky](https://github.com/AgentRomanovsky)
 * Телеграм: [@AgentRomanovsky](https://t.me/AgentRomanovsky)
 * VK: [@agentromanovsky](https://vk.com/agentromanovsky)

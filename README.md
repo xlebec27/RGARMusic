@@ -26,7 +26,7 @@
 * Телеграм: [@xlebec27](https://t.me/xlebec27)
 * VK: [@artjomprm](https://vk.com/artjomprm)
 
-**Жуков Роман Андреевич**
+**Жуков Роман Александрович**
 * Github: [@AgentRomanovsky](https://github.com/AgentRomanovsky)
 * Телеграм: [@AgentRomanovsky](https://t.me/AgentRomanovsky)
 * VK: [@agentromanovsky](https://vk.com/agentromanovsky)

@@ -1,0 +1,81 @@
+@startuml
+
+
+class Update{
+artist;
+album;
+dateUpdate;
+}
+class Track{
+nameTrack;
+artist;
+album;
+lengthTime;
+tags;
+}
+class Playlist{
+namePlaylist;
+creator;
+cover;
+trackList: List<Track>
+}
+class Album{
+artist;
+dateRelease;
+nameAlbum;
+cover;
+trackList: List<Track>;
+tags;
+}
+class Artist{
+tags;
+name;
+artistPicture;
+albumList: List<Album>;
+trackList: List<Track>;
+}
+
+class Admin{
+addContent()
+deleteContent()
+editContent()
+}
+class MusicPlayer{
+trackList: List<Track>;
+volume;
+play()
+pause()
+changeVolume()
+shuffleTracks()
+switchTracks()
+}
+
+class User {
+nickName;
+email;
+password;
+profilePicture;
+playlist:List<Playlist>;
+favorite;
+search()
+changeAccountInfo()
+checkStatistics()
+viewUpdates()
+getRecommendation()
+createPlaylist()
+deletePlaylist()
+editPlaylist()
+addToFavorite()
+deleteFromFavorite()
+}
+Admin-|>User:extends
+Album *--|>Artist
+Album *--|>Track
+MusicPlayer *--|>Track
+User o--|>MusicPlayer
+Update o--|>Album
+Update o--|>Artist
+Playlist o--|>Track
+Artist o--|>Track
+User o--|>Playlist
+@enduml

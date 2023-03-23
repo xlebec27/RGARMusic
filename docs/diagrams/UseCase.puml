@@ -1,0 +1,40 @@
+@startuml
+skinparam actorStyle awesome
+(Администратор) as admin
+(Авторизованный пользователь) as user
+(Авторизоваться) as (authorize)
+(Просмотр личного кабинета) as (check_own_profile)
+(Редактировать личный кабинет) as (update_own_profile)
+(Поиск) as (search)
+(Прослушивание музыки) as (listen_to_music)
+(Фильтр) as (filter)
+(Музыкальный контент) as (music_content)
+(Список пользователей) as (list_users)
+(Плеер) as (music_player)
+(Управление плеером) as (music_player_management)
+(Добавление контент) as (add_content)
+(Удаление контента) as (delete_content)
+
+
+:user:--(list_users)
+:Неавторизованный пользователь: -- (authorize)
+:user:..|>:Неавторизованный пользователь:
+:admin:..|>:Неавторизованный пользователь:
+
+:user: -- (check_own_profile)
+:user: -- (listen_to_music)
+:user: -- (search)
+:admin: -- (listen_to_music)
+:admin: -- (search)
+:admin: -- (check_own_profile)
+:admin: -- (add_content)
+:admin: -- (delete_content)
+(search)..|>(filter):include
+(filter)<|..(music_content):extend
+(filter)<|..(list_users):extend
+(listen_to_music)..|>(music_player):include
+(music_player)<|..(music_player_management):extend
+(check_own_profile)<|..(update_own_profile):extend
+
+
+@enduml

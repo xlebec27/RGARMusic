@@ -1,0 +1,43 @@
+@startuml
+autonumber
+
+actor "Пользователь" as user
+participant "UI" as ui
+participant "Backend" as backend
+database "База данных" as database
+
+activate ui
+user->ui:Ввод измененных данных
+ui->ui:Проверка введенных данных
+activate ui
+deactivate ui
+ui-->user:[некорректные данные] ошибка
+
+ui->backend:[корректные данные] отправка данных на редактирование
+activate backend
+
+backend->database:Запрос на пользователей с введенными данными
+activate database
+
+database-->backend:Ответ
+deactivate database
+
+backend->backend:Проверка
+activate backend
+deactivate backend
+
+backend-->ui:[пользователь с такими данными существуют] ошибка
+
+ui-->user:Это значение уже было использовано
+
+
+
+backend->database:Запрос на изменение данных
+activate database
+database-->backend:Ответ
+deactivate database
+
+backend-->ui:Возврат новых пользовательских данных
+
+ui-->user:Отображение страницы зарегистрированного пользователя
+@enduml

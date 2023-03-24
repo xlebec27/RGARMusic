@@ -12,7 +12,7 @@
 ## Контактные данные
 
 **Аббасов Руслан Самирович (мегаглавный)**
-* Github: [@itsremor]()
+* Github: [@marrrrrrrrrrs](https://github.com/marrrrrrrrrrs)
 * Телеграм: [@ruslaneighteen](https://t.me/ruslaneighteen)
 * VK: [@ruslan.marrs](https://vk.com/ruslan.marrs)
 

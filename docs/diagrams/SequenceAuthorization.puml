@@ -1,0 +1,40 @@
+@startuml
+autonumber
+
+participant "Пользователь" as Пользователь
+participant "Система" as Система
+database "База данных" as database
+
+autonumber
+Пользователь -> Система: Данные авторизации
+activate Система
+
+Система -> Система:Проверка
+activate Система
+
+deactivate Система
+
+Система -->Пользователь:[некорректный ввод] ошибка
+activate Пользователь
+
+Система -> database:[корректные данные] запрос на пользователя
+deactivate Система
+activate database
+
+database-->Система: Ответ
+deactivate database
+activate Система
+
+Система -> Система:Проверка
+activate Система
+
+deactivate Система
+
+Система -->Пользователь:[пользователь не найден] ошибка
+activate Пользователь
+
+Система -->Пользователь:[пользователь найден] авторизация
+deactivate Система
+activate Пользователь
+
+@enduml

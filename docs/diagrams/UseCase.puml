@@ -1,7 +1,7 @@
 @startuml
 skinparam actorStyle awesome
-(Администратор) as admin
-(Авторизованный пользователь) as user
+"Администратор" as Admin
+"Авторизованный пользователь" as User
 (Авторизоваться) as (authorize)
 (Просмотр личного кабинета) as (check_own_profile)
 (Редактировать личный кабинет) as (update_own_profile)
@@ -12,29 +12,40 @@ skinparam actorStyle awesome
 (Список пользователей) as (list_users)
 (Плеер) as (music_player)
 (Управление плеером) as (music_player_management)
-(Добавление контент) as (add_content)
-(Удаление контента) as (delete_content)
+(Добавление нового контента) as (add_content)
+(Удаление существующего контента) as (delete_content)
+(Профиль пользователя) as userProfile
+(Плейлисты) as playlist
+(Альбомы) as album
+(Треки) as tracks
+(Исполнители) as artist
+(Редактирование своей музыкальной библиотеки) as editLibrary
 
-
-:user:--(list_users)
+:User:--(list_users)
 :Неавторизованный пользователь: -- (authorize)
-:user:..|>:Неавторизованный пользователь:
-:admin:..|>:Неавторизованный пользователь:
+:User:..|>:Неавторизованный пользователь:
+:Admin:..|>:Неавторизованный пользователь:
 
-:user: -- (check_own_profile)
-:user: -- (listen_to_music)
-:user: -- (search)
-:admin: -- (listen_to_music)
-:admin: -- (search)
-:admin: -- (check_own_profile)
-:admin: -- (add_content)
-:admin: -- (delete_content)
+:User: -- (check_own_profile)
+:User: -- (listen_to_music)
+:User: -- (search)
+:Admin: -- (listen_to_music)
+:Admin: -- (search)
+:Admin: -- (check_own_profile)
+:Admin: -- (add_content)
+:Admin: -- (delete_content)
 (search)..|>(filter):include
 (filter)<|..(music_content):extend
 (filter)<|..(list_users):extend
 (listen_to_music)..|>(music_player):include
 (music_player)<|..(music_player_management):extend
 (check_own_profile)<|..(update_own_profile):extend
-
-
+(music_content)..|>(playlist):include
+(music_content)..|>(album):include
+(music_content)..|>(tracks):include
+(music_content)..|>(artist):include
+(music_content)..|>(editLibrary):include
+(delete_content)..|>(music_content):include
+(add_content)..|>(music_content):include
+(list_users)..|>(userProfile):include
 @enduml

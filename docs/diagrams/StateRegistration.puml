@@ -1,0 +1,14 @@
+@startuml
+state "Запрос на регистрацию" as State1
+state "Проверка данных" as State2
+state "Ошибка регистрации" as State3
+state "Выполнение регистрации" as State4
+state "Страница зарегистрированного пользователя" as State5
+[*] -right-> State1
+State1 -right->State2 :Провести проверку
+State2 -down-> State3 :Пользователь с такими данными существует
+State2 -right-> State4 :Данные корректны
+State3 --> State1 :Сделать новый запрос
+State4 -right-> State5
+State5 -right-> [*]
+@enduml

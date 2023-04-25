@@ -7,6 +7,7 @@
 * [Ссылка на курсовую работу](https://github.com/xlebec27/RGARMusic/blob/main/documentation/RGAR%20Music%20-%20%D0%9A%D1%83%D1%80%D1%81%D0%BE%D0%B2%D0%B0%D1%8F%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0.pdf)
 * [Диаграммы](https://github.com/xlebec27/RGARMusic/tree/main/docs/diagrams)
 * [Презентация проекта](https://youtu.be/MdEdVXsQTWA)
+* [Figma](https://www.figma.com/file/Jn7LazBfpWcCsDmrTICq29/Untitled?node-id=6:6&t=ki3V1joEp7UazaI6-1)
 
 ## Контактные данные
 

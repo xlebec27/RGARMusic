@@ -1,0 +1,5 @@
+
+.card-cover:hover{
+    transition: filter 0.2s;
+    filter: blur(8px)
+}

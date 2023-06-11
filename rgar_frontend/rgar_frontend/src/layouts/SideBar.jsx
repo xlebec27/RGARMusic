@@ -22,8 +22,8 @@ const items = [         //TODO add icons
         key: 'favourite'
     },
     {
-        label: 'Login',
-        key: 'login'
+        label: 'Settings',
+        key: 'settings'
     }
   ];
 
@@ -50,11 +50,12 @@ export function SideBar(props){
                     left: 0,
                     top: 0,
                     bottom: 0,
+                    backgroundColor: '#fff'
                 }}>
                     <div>
                         Logo
                     </div>
-                    <Menu mode="inline" theme="dark" onClick={onClick} items={items}/>
+                    <Menu mode="inline" onClick={onClick} items={items}/>
             </Sider>
             
             <Layout

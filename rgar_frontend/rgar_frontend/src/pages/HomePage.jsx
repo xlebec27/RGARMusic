@@ -1,4 +1,4 @@
-import {Button, Space, Row, Col} from 'antd';
+import {Space, Row, Col} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import { CoverCard } from '../components/CoverCard';
 
@@ -35,9 +35,6 @@ export function HomePage(){
                 <Col span={4}>col-4</Col>
                 <Col span={4}>col-4</Col>
             </Row>
-            <Button type="primary" shape="round" size={'large'} onClick={routeChange}>
-            Login
-            </Button>
         </Space>
 
     )

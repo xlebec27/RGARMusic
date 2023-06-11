@@ -10,23 +10,8 @@ import { AlbumPage } from "../pages/AlbumPage";
 import { ArtistPage } from "../pages/ArtistPage";
 import { SettingsPage } from "../pages/SettingsPage";
 import { UserPage } from "../pages/UserPage";
-
-// const router = createBrowserRouter([
-//     {
-//       path: "/",
-//       element: <HomePage />,
-//       errorElement: <ErrorPage />,
-//     },
-//     {
-//       path: "/home",    //TODO create home
-//       element: <HomePage />,
-//       errorElement: <ErrorPage />,
-//     },
-//     {
-//       path: "/login",
-//       element: <LoginPage/>
-//     }
-//   ])
+import { AddAlbumPage } from "../pages/AddAlbumPage";
+import { RegistrationPage } from "../pages/RegistrationPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +24,11 @@ const router = createBrowserRouter(
       <Route
             path="/login"
             element={<LoginPage/>}
+            errorElement={<ErrorPage/>}
+          />
+          <Route
+            path="/register"
+            element={<RegistrationPage/>}
             errorElement={<ErrorPage/>}
           />
       <Route
@@ -84,6 +74,11 @@ const router = createBrowserRouter(
           <Route
             path="/settings"
             element={<SettingsPage/>}
+            errorElement={<ErrorPage/>}
+          />
+          <Route
+            path="/add/album"
+            element={<AddAlbumPage/>}
             errorElement={<ErrorPage/>}
           />
         </Route>

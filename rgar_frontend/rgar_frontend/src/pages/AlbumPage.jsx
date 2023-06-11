@@ -7,6 +7,7 @@ import { faCirclePlay, faBarsStaggered, faSquarePlus, faLink, faFlag} from '@for
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useRef } from 'react'
 import { ReportModal } from '../components/ReportModal'
+import { ArtistCard } from '../components/ArtistCard'
 
 export function AlbumPage(params){
 

@@ -29,7 +29,7 @@ export function ReportModal(props){
         </div>
         <Modal title="Report content" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <p>Report an issue</p>
-            <TextArea placeholder="Autosize height based on content lines" autoSize />
+            <TextArea placeholder="" autoSize />
         </Modal>
     
     </>

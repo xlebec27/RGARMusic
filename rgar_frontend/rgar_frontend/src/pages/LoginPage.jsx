@@ -7,9 +7,13 @@ export function LoginPage(){
 
     let navigate = useNavigate();
 
-    const routeChange = () =>{
+    const login = () =>{
         navigate('/home');
-      }
+    }
+
+    const register = () =>{
+    navigate('/register');
+    }
 
     return (
         <div>
@@ -20,8 +24,11 @@ export function LoginPage(){
                 //prefix={<UserOutlined className="site-form-item-icon" />}     TODO
             />
             <Input.Password placeholder="input password" />
-            <Button type="primary" shape="round" size={'large'} onClick={routeChange} style={{width: '100%'}}>
+            <Button type="primary" shape="round" size={'large'} onClick={login} style={{width: '100%'}}>
             Login
+            </Button>
+            <Button onClick={register} style={{width: '100%'}}>
+            Register
             </Button>
             </Space>
 

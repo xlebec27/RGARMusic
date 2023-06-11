@@ -1,5 +1,12 @@
-
 .card-cover:hover{
     transition: filter 0.2s;
     filter: blur(8px)
 }
+
+.card-artist{
+    text-align: center;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+
+

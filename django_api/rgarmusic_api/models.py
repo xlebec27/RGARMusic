@@ -31,7 +31,7 @@ class UserManager(BaseUserManager):
 class UserData(AbstractBaseUser):
     email = models.EmailField(max_length=100, unique=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    image = models.FileField(upload_to='user_profile_image/', blank=True, null=True)
+    image = models.FileField(upload_to='static/user_profile_image/', blank=True, null=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     username = models.CharField(max_length=100, unique=True)
@@ -51,7 +51,7 @@ class UserData(AbstractBaseUser):
 class Artist(models.Model):
     name = models.CharField(max_length=100, unique=True, primary_key=True)
     genre = models.CharField(max_length=50)
-    picture = models.FileField(upload_to='artist_avatar/')
+    picture = models.FileField(upload_to='static/artist_avatar/')
 
 class Playlist(models.Model):
     name = models.CharField(max_length=100)
@@ -61,7 +61,7 @@ class Playlist(models.Model):
 class Album(models.Model):
     name = models.CharField(max_length=100)
     genre = models.CharField(max_length=50)
-    cover = models.FileField(upload_to='album_avatar/',)
+    cover = models.FileField(upload_to='static/album_avatar/',)
     artist = models.ManyToManyField(Artist, related_name="album_list")
     tracks = models.ManyToManyField('Track', related_name="tracks")
 
@@ -70,7 +70,7 @@ class Track(models.Model):
     artist = models.ManyToManyField(Artist, related_name="track_list")
     duration = models.CharField(max_length=5)
     album = models.ForeignKey(Album, on_delete=models.DO_NOTHING, related_name="album")
-    link = models.FileField(upload_to='track/',)
+    link = models.FileField(upload_to='static/track/',)
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)

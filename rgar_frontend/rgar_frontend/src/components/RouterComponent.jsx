@@ -4,7 +4,7 @@ import { ErrorPage } from "../pages/ErrorPage"
 import { LoginPage } from "../pages/LoginPage"
 import { SideBar } from 'layouts/SideBar';
 import { ProfilePage } from "../pages/ProfilePage";
-// import { FavouritePage } from "../pages/FavouritePage";
+import { FavouritePage } from "../pages/FavouritePage";
 import { SearchPage } from "../pages/SearchPage";
 import { AlbumPage } from "../pages/AlbumPage";
 import { ArtistPage } from "../pages/ArtistPage";
@@ -41,11 +41,11 @@ const router = createBrowserRouter(
             element={<HomePage/>}
             errorElement={<ErrorPage/>}
           />
-          {/* <Route
+          <Route
             path="/favourite"
             element={<FavouritePage/>}
             errorElement={<ErrorPage/>}
-          /> */}
+          />
           <Route
             path="/profile"
             element={<ProfilePage/>}

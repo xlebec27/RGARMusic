@@ -17,7 +17,7 @@ export function LoginPage(){
 
     return (
         <div>
-            <Space direction="vertical">
+            <Space direction="vertical" align="center" style={{width: '98%'}}>
             <h1>Login</h1>
             <Input
                 placeholder="Enter your username"

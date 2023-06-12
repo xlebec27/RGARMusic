@@ -1,14 +1,22 @@
 import { useState } from 'react';
-import {Layout} from 'antd';
+import {ConfigProvider} from 'antd';
 import { SideBar } from 'layouts/SideBar';
 import { RouterComponent as Router} from 'components/RouterComponent';
 
-const Content= Layout;
 
 export function App() {
 
   return (
-    <Router/>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#BE3455',
+          colorBgBase: '#ffffff'
+        },
+      }}>
+      <Router/>
+    </ConfigProvider>
+    
       
   )
 }

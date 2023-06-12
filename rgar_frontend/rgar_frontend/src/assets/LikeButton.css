@@ -1,0 +1,24 @@
+.like-button-wrapper {
+    
+      content: "";
+      will-change: background-color;
+      transition: background-color 0.3s, transform 0.3s;
+      color: #c1c9c9;
+}
+
+.liked {
+    color: red;
+    animation: click 300ms;
+}
+
+@keyframes click {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.96);
+    }
+    100% {
+        transform: scale(1);
+    }
+    }

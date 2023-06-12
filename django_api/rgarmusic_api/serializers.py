@@ -20,24 +20,34 @@ class UserDataSerializer(serializers.ModelSerializer):
         model = UserData
         fields = ['id','email', 'password']
 
-
-
-
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
-        fields = ['id','name', 'picture', 'genre']
+        fields = ['name', 'picture', 'genre']
+
+class TrackFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TrackFile
+        fields = "__all__"
+        # fields = ["test"]
+
 
 class TrackSerializer(serializers.ModelSerializer):
-
-    artist = serializers.PrimaryKeyRelatedField(queryset=Artist.objects.all(),
-                                                 many=True)  # ManyToMany поле для артистов
+    file = TrackFileSerializer(many=False, required=True)
 
     class Meta:
-
         model = Track
-        fields = ['name', 'duration', 'artist', 'link']
+        fields = ['name', 'duration', 'file', 'artist']
 
+    def create(self, validated_data):
+        file_data = validated_data.pop('file')
+        artist_data = validated_data.pop('artist')
+
+        track_file = TrackFile.objects.create(**file_data)
+        track = Track.objects.create(file=track_file, **validated_data)
+        track.artist.set(artist_data)
+
+        return track
 class AlbumSerializer(serializers.ModelSerializer):
     artist = serializers.PrimaryKeyRelatedField(queryset=Artist.objects.all(), many=True)  # ManyToMany field for artists
     tracks = TrackSerializer(many=True)
@@ -46,20 +56,25 @@ class AlbumSerializer(serializers.ModelSerializer):
         model = Album
         fields = ['name', 'genre', 'artist', 'tracks', 'cover']
 
+        # fields = ['name', 'genre', 'artist', 'tracks']
+
     def create(self, validated_data):
-        artist = validated_data.pop('artist')
+        artists = validated_data.pop('artist')
         tracks_data = validated_data.pop('tracks')
 
         album = Album.objects.create(**validated_data)
-        album.artist.set(artist)  # Assign artists to the album using set()
+        album.artist.set(artists)
 
         for track_data in tracks_data:
+            file_data = track_data.pop('file')
             artists = track_data.pop('artist')
-            tracks = Track.objects.create(album=album, **track_data)
-            tracks.artist.set(artists)  # Assign artists to the track using set()
-            album.tracks.add(tracks)
 
+            track_file = TrackFile.objects.create(**file_data)
+            track = Track.objects.create(album=album, file=track_file, **track_data)
+            track.artist.set(artists)
+            track.save()
 
+            album.tracks.add(track)
         return album
 
 class ArtistDataSerializer(serializers.ModelSerializer):

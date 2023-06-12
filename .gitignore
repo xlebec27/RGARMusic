@@ -1,1 +1,3 @@
 django_api/rgarmusic_api/migrations/*
+/django_api/static
+/django_api/venv

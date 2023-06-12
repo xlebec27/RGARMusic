@@ -70,7 +70,13 @@ class Track(models.Model):
     artist = models.ManyToManyField(Artist, related_name="track_list")
     duration = models.CharField(max_length=5)
     album = models.ForeignKey(Album, on_delete=models.DO_NOTHING, related_name="album")
-    link = models.FileField(upload_to='static/track/',)
+    file = models.OneToOneField(to= 'TrackFile', related_name="info", on_delete=models.CASCADE, blank=True)
+
+
+class TrackFile(models.Model):
+    link = models.FileField(upload_to='static/track/', )
+    test = models.CharField(max_length=100)
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)

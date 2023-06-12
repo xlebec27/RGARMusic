@@ -4,13 +4,17 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
 
-router.register("artist", ArtistView, basename='Artist')
-router.register("album", AlbumView, basename='Album')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('register/', RegisterView.as_view(), name='Register'),
-    path('auth/', include('djoser.urls')),
-    re_path('auth/', include('djoser.urls.authtoken')),
+    path('user/artistAll/<int:pk>/', ArtistDetailView.as_view()), # Вся информация по артисту: альбомы там, треки. Доступ по pk артиста
+    path('user/albumAll/<int:pk>/', AlbumDetailView.as_view()), # Вся информация по альбому, все треки. Доступ по pk альбома
+    path('user/artists/', allArtist.as_view()), # Просто вывод всех артистов
+    path('user/profile/<int:pk>', userProfile.as_view()),
+
+    path('admin/users/', allUser.as_view()), # Все пользователи
+    path('admin/createAlbum/', AlbumCreateView.as_view()), # Создание альбома
+    path('admin/createArtist/', CreateArtist.as_view()), # Создание артиста
+
 ]
 

@@ -82,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'rgarmusicapp_db',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'USER': 'denis',
+        'PASSWORD': 'qwerty123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -136,14 +136,36 @@ AUTH_USER_MODEL = 'rgarmusic_api.UserData'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
+
         'rest_framework.permissions.AllowAny',
     ]
 }
 
+DJOSER = {
+    'DOMAIN_OVERRIDE' : 'http://localhost:8000/',
+    'PASSWORD_RESET_CONFIRM_URL': '/recovery_pass_2/{uidb64}/{token}',
+    'PASSWORD_RESET_CONFIRM_VIEW': 'backForTP.main.views.CustomPasswordResetConfirmView',
+    'ACTIVATION_URL': "auth/activate/{uid}/{token}",
+    'PASSWORD_RESET_SERIALIZER':'custom_serializers.CustomPasswordResetSerializer',
+
+
+    'SEND_ACTIVATION_EMAIL': False,
+    'USER_CREATE_PASSWORD_RETYPE': False,
+    'LOGIN_FIELD': 'email',
+    'SERIALIZERS' : {
+        'user_create': 'rgarmusic_api.serializers.CustomUserCreateSerializer',
+    }
+    # 'USER_CREATE_FIELDS': ['email', 'password'],
+
+
+}
+
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=500),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -181,3 +203,4 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+

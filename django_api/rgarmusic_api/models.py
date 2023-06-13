@@ -53,10 +53,23 @@ class Artist(models.Model):
     genre = models.CharField(max_length=50)
     picture = models.FileField(upload_to='static/artist_avatar/')
 
-class Playlist(models.Model):
+class MyPlaylist(models.Model):
     name = models.CharField(max_length=100)
-    cover = models.FileField()
-    track = models.ForeignKey('Track', related_name="track", on_delete=models.DO_NOTHING,)
+    cover = models.FileField(upload_to='static/play_list_avatar/')
+    track = models.ManyToManyField('Track', related_name="playList")
+    user = models.ForeignKey(UserData, related_name="MyplayList", on_delete=models.CASCADE)
+
+class LikedPlayList(models.Model) :
+    user = models.OneToOneField(UserData, related_name="LikedPlayLists", on_delete=models.CASCADE)
+    playlist = models.ManyToManyField(MyPlaylist, related_name="LikedUsers")
+
+class LikeUserAlbum(models.Model) :
+    user = models.OneToOneField(UserData, related_name="AlbumsLikes", on_delete=models.CASCADE)
+    album = models.ManyToManyField('Album', related_name="UsersLikes")
+
+class LikeUserArtist(models.Model) :
+    user = models.OneToOneField(UserData, related_name="ArtistsLikes", on_delete=models.CASCADE)
+    artist = models.ManyToManyField('Artist', related_name="UsersLikes")
 
 class Album(models.Model):
     name = models.CharField(max_length=100)
@@ -64,16 +77,23 @@ class Album(models.Model):
     cover = models.FileField(upload_to='static/album_avatar/',)
     artist = models.ManyToManyField(Artist, related_name="album_list")
     tracks = models.ManyToManyField('Track', related_name="tracks")
+    tags = models.ManyToManyField('Tag', related_name="album")
 
 class Track(models.Model):
     name = models.CharField(max_length=100)
     artist = models.ManyToManyField(Artist, related_name="track_list")
     duration = models.CharField(max_length=5)
     album = models.ForeignKey(Album, on_delete=models.DO_NOTHING, related_name="album")
-    link = models.FileField(upload_to='static/track/',)
+    file = models.OneToOneField(to= 'TrackFile', related_name="info", on_delete=models.CASCADE, blank=True)
+
+
+class TrackFile(models.Model):
+    link = models.FileField(upload_to='static/track/', )
+    test = models.CharField(max_length=100)
+
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
 
 

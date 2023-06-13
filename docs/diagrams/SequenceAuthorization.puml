@@ -6,8 +6,11 @@ participant "Система" as Система
 database "База данных" as database
 
 autonumber
-Пользователь -> Система: Данные авторизации
 activate Система
+activate Пользователь
+Пользователь -> Система: Данные авторизации
+deactivate Пользователь
+
 
 Система -> Система:Проверка
 activate Система
@@ -16,25 +19,22 @@ deactivate Система
 
 Система -->Пользователь:[некорректный ввод] ошибка
 activate Пользователь
-
+deactivate Пользователь
 Система -> database:[корректные данные] запрос на пользователя
 deactivate Система
 activate database
 
+database -> database:Проверка
 database-->Система: Ответ
 deactivate database
-activate Система
 
-Система -> Система:Проверка
 activate Система
-
-deactivate Система
 
 Система -->Пользователь:[пользователь не найден] ошибка
 activate Пользователь
-
+deactivate Пользователь
 Система -->Пользователь:[пользователь найден] авторизация
 deactivate Система
 activate Пользователь
-
+deactivate Пользователь
 @enduml

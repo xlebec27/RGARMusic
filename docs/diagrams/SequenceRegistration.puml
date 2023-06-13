@@ -7,32 +7,49 @@ participant "Backend" as backend
 database "База данных" as database
 
 activate ui
+activate user
 user->ui:Ввод данных
+deactivate user
 ui->ui:Проверка введенных данных
 activate ui
 deactivate ui
 ui-->user:[некорректные данные] ошибка
-
+activate user
+deactivate user
 ui->backend:[корректные данные] отправка данных на регистрацию
+deactivate ui
 activate backend
 
 backend->database:Запрос на на наличие пользователей с такими данными
-activate database
-
-database-->backend:Ответ
-deactivate database
-backend->backend:Проверка уникальности
-activate backend
 deactivate backend
-backend-->ui:[пользователь с такими данными уже существует] ошибка
-ui-->user: [указанные данные уже были использованы] ошибка
-
-backend->database:[данные уникальны] Добавление
 activate database
-
+database->database:Проверка уникальности
+activate database
+deactivate database
 database-->backend:Ответ
 deactivate database
 
+activate backend
+backend-->ui:[пользователь с такими данными уже существует] ошибка
+activate ui
+ui-->user: [указанные данные уже были использованы] ошибка
+deactivate ui
+activate user
+backend->database:[данные уникальны] Запрос на добавление
+deactivate backend
+deactivate user
+activate database
+database->database:Добавление записи
+activate database
+deactivate database
+database-->backend:Ответ
+deactivate database
+activate backend
 backend-->ui:Возврат пользовательских данных
+deactivate backend
+activate ui
 ui-->user:Отображение страницы зарегистрированного пользователя
+deactivate ui
+activate user
+deactivate user
 @enduml

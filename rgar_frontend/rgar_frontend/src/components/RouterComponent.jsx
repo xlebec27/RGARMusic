@@ -12,6 +12,8 @@ import { SettingsPage } from "../pages/SettingsPage";
 import { UserPage } from "../pages/UserPage";
 import { AddAlbumPage } from "../pages/AddAlbumPage";
 import { RegistrationPage } from "../pages/RegistrationPage";
+// import { action as loginAction } from "../pages/LoginPage";
+import { AddArtistPage } from "../pages/AddArtistPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,7 +23,13 @@ const router = createBrowserRouter(
             element={<LoginPage/>}
             errorElement={<ErrorPage/>}
           />
-      <Route
+      {/* <Route
+            path="/login"
+            element={<LoginPage/>}
+            errorElement={<ErrorPage/>}
+            action={loginAction}
+          /> */}
+          <Route
             path="/login"
             element={<LoginPage/>}
             errorElement={<ErrorPage/>}
@@ -31,7 +39,8 @@ const router = createBrowserRouter(
             element={<RegistrationPage/>}
             errorElement={<ErrorPage/>}
           />
-      <Route
+      
+        <Route
         element={<SideBar/>}
         errorElement={<ErrorPage/>}
       >
@@ -81,9 +90,14 @@ const router = createBrowserRouter(
             element={<AddAlbumPage/>}
             errorElement={<ErrorPage/>}
           />
+          <Route
+            path="/add/artist"
+            element={<AddArtistPage/>}
+            errorElement={<ErrorPage/>}
+          />
+          </Route>
         </Route>
       </Route>
-    </Route>
     
   )
   )

@@ -42,9 +42,8 @@ export function SettingsPage(){
     }
 
     const logout = () => {
-        if (true) {
-            navigate('/login');
-        }
+        localStorage.clear();
+        navigate('/login');
     }
 
     return(
@@ -69,6 +68,7 @@ export function SettingsPage(){
                 Confrim changes
                 </Button>
                 <Link to='/add/album'>Add Album</Link>
+                <Link to='/add/artist'>Add Artist</Link>
                 
                 <Button type="primary" shape="round" size={'large'} onClick={logout}>
                 Log out

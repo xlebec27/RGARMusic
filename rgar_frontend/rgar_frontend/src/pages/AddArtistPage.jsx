@@ -1,14 +1,14 @@
 import {Row, Col, Space,  Input, Avatar, Upload, Button} from 'antd'
 import { useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
-import axios from "axios";
+import { createArtist } from '../lib/AxiosServices'
+import axios from 'axios'
 
-export function RegistrationPage(){
+export function AddArtistPage(){
     
     
-    const [email, setEmail] = useState("")
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
+    const [genre, setGenre] = useState("")
     const [img, setImg] = useState()
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
@@ -37,36 +37,34 @@ export function RegistrationPage(){
         setImg(e.file)
     }
 
-    function isEmpty(object) {
-        for(var i in object) { return true; } return false; 
-       }
-  
-   const register = async () => {
-    try {
-        console.log(JSON.stringify({ email, username, password, img }))
+    async function postArtist(){
+        try {
+            console.log(JSON.stringify({ name, genre, img }))
        
-       console.log(process.env.REACT_APP_API_URL);
-       const response = await axios.post("http://localhost:8000/auth/users/",
-           JSON.stringify({ email, username, password, img }),
-           {
-               headers: { 'Content-Type': 'application/json' }
-           }
-       );
-       console.log(JSON.stringify(response.data));
-       navigate("/login");
+            const response = await axios.post("http://localhost:8000/api/admin/createArtist/",
+                {name: name, genre: genre, picture: img },
+                {
+                    headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
+                    
+                }
+            );
+            console.log(JSON.stringify(response.data));
+            navigate("/settings");
+        } catch (error) {
+            if(error?.response?.status === 401){
+                localStorage.clear();
+                navigate("/login");
+            }
+        }
         
-    } catch (error) {
-        console.log(error);
     }
-        
-   }
 
     return (
         <Row justify="center" style={{width:"100%"}} gutter={[16, 16]} size="large">
             <Space direction="vertical" style={{textAlign:"center", paddingTop:"5%"}}>
-                <h2>Register</h2>
-                <Input placeholder="Enter your email" onChange={(e) => { setEmail(e.target.value) }}/>
-                <Input placeholder="Enter your username" onChange={(e) => { setUsername(e.target.value) } }/>
+                <h2>Add Artist</h2>
+                <Input placeholder="Enter artist name" onChange={(e) => { setName(e.target.value) }}/>
+                <Input placeholder="Enter artist genre" onChange={(e) => { setGenre(e.target.value) }}/>
                 <Upload 
                     onChange={onSelectFile}
                     beforeUpload={() => {
@@ -78,9 +76,8 @@ export function RegistrationPage(){
                     <Button style={{width: '100%'}} >Click to Upload</Button>
                 </Upload>
                 {selectedFile &&  <Avatar src={preview} size={192}/> }
-                <Input.Password placeholder="input password" onChange={(e) => { setPassword(e.target.value) } }/>
-                <Button type="primary" shape="round" size={'large'} onClick={register} style={{width: '100%'}}>
-                Register
+                <Button type="primary" shape="round" size={'large'} onClick={postArtist} style={{width: '100%'}}>
+                Create Artist
                 </Button>
                 </Space>
             

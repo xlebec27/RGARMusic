@@ -12,5 +12,7 @@ export default defineConfig({
       { find: 'features', replacement: '/src/features' },
     ],
   },
-
+  define: {
+    'process.env': process.env
+  }
 })

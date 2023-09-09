@@ -1,0 +1,12 @@
+@startuml
+state "Запрос на музыку" as State1
+state "Проверка данных" as State2
+state "'По запросу ничего не найдено'" as State3
+state "Вывод найденной музыки" as State4
+[*] -right-> State1
+State1 -right->State2 :Провести проверку
+State2 -down-> State3 :Такие данные отсутствуют
+State2 -right-> State4 :Найдено соответствие
+State3 --> State1 :Сделать новый запрос
+State4 -right-> [*]
+@enduml

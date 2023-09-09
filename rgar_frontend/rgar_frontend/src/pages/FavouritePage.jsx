@@ -1,53 +1,110 @@
-import {Avatar, Space, Divider, Row, Col} from 'antd'
+import { Avatar, Space, Divider, Row, Col } from 'antd'
 import { CoverCard } from '../components/CoverCard'
 import "/src/assets/ProfilePage.css"
-import  { ArtistCard } from '../components/ArtistCard'
+import { ArtistCard } from '../components/ArtistCard'
+import { useEffect, useState } from 'react'
+import axios from "axios"
 
 
 export function FavouritePage(params) {
-        
-    return(
-        <Space direction="vertical">  
-            <Row>      
+
+    const [artists, setArtists] = useState([])
+    const [albums, setAlbums] = useState([])
+    const [playlists, setPlaylists] = useState([])
+
+    useEffect(() => {
+        console.log("data load");
+        async function load_data() {
+            try {
+                const artists = await axios.get("http://localhost:8000/api/user/like/artist/",
+                    {
+                        headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
+                    }
+                );
+                console.log(artists.data);
+                setArtists(artists.data);
+                const albums = await axios.get("http://localhost:8000/api/user/like/album/",
+                    {
+                        headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
+                    }
+                );
+                console.log(albums.data);
+                setAlbums(albums.data);
+                const playlists = await axios.get("http://localhost:8000/api/user/like/playlist/",
+                    {
+                        headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
+                    }
+                );
+                console.log(playlists.data);
+                setPlaylists(playlists.data);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        load_data()
+    }, []);
+
+    function renderAlbums() {
+        var favourite = []
+        favourite.push(albums?.map(album => {
+            return <Col span={4}><CoverCard
+                img={"http://localhost:8000/" + album.cover}
+                id={album.id}
+                name={album.name} desc={album.artist[0].name} type={"album"} className="playlist-card"/>
+            </Col>
+        }))
+        return favourite;
+    }
+
+    function renderPlaylists() {
+        var favourite = []
+        favourite.push(playlists?.map(playlist => {
+            return <Col span={4} key={playlist.id}><CoverCard
+                img={playlist.cover}
+                id={playlist.id}
+                name={playlist.name} desc={profile.username} type={"playlist"} className="playlist-card" />
+            </Col>
+        }))
+        return favourite;
+    }
+
+    function renderArtists() {
+        var favourite = []
+        favourite.push(artists?.map(artist => {
+            return <Col span={4} key={artist.name}><ArtistCard
+                img={"http://localhost:8000/" + artist.picture}
+                id={artist.name}
+                name={artist.name} className="playlist-card" />
+            </Col>
+        }))
+        return favourite;
+    }
+
+    return (
+        <Space direction="vertical" style={{width: '100%'}}>
+            <Row>
                 <h3>
-                Favourite
+                    Favourite
                 </h3>
-            </Row>      
-            
+            </Row>
+            <Divider>Album</Divider>
+            <Row justify="space-around" type="flex">
+                {renderAlbums()}
+            </Row>
             <Divider>Playlists</Divider>
             <Row justify="space-around" type="flex">
-                <Col span={4} ><CoverCard 
-                    img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg" 
-                    name="Rouge Carpet Disaster" desc="Static Dress" className="playlist-card"/>
-                </Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" 
-                    name="White Pony" desc="Deftones" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg"
-                    name="aaaa" desc="bbb" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" name="aaaa" desc="bbb" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg" 
-                    name="aaaa" desc="bbb" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" name="aaaa" desc="bbb" className="playlist-card"/></Col>
+                {renderPlaylists()}
             </Row>
             <Divider>Artists</Divider>
-            <Row justify="space-evenly">
-                <Col span={4} >
-                    <ArtistCard img="https://i.scdn.co/image/ab6761610000e5ebe0b26c1c00a538ef485f74cf" name="Invent Animate" className="playlist-card"/>
-                </Col>
-                <Col span={4} >
-                <ArtistCard img="https://i.scdn.co/image/ab6761610000e5ebe0b26c1c00a538ef485f74cf" name="AAAAAAA" className="playlist-card"/>
-                </Col>
+            <Row justify="space-evenly" type="flex">
+                {renderArtists()}
             </Row>
             <Divider>Users</Divider>
-            <Row justify="space-evenly">
-                <Col span={4} >
-                    <ArtistCard img="https://i.scdn.co/image/ab6761610000e5ebe0b26c1c00a538ef485f74cf" name="Invent Animate" className="playlist-card"/>
-                </Col>
-                <Col span={4} >
-                <ArtistCard img="https://i.scdn.co/image/ab6761610000e5ebe0b26c1c00a538ef485f74cf" name="AAAAAAA" className="playlist-card"/>
-                </Col>
+            <Row justify="space-evenly" type="flex">
+
             </Row>
         </Space>
     )
-    
+
 }

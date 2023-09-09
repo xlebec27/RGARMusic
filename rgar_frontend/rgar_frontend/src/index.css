@@ -39,6 +39,11 @@ h4 {
   font-size: 1vw;
 }
 
+a:link {color: #BE3455;}  
+a:visited {color: #BE3455}  
+a:hover {color: #be4f69}  
+a:active {color: #bd1439}  
+
 .ant-image-preview-operations-operation:not(:first-child) {
   display: none;
 }

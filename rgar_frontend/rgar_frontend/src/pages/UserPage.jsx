@@ -4,34 +4,57 @@ import "/src/assets/ProfilePage.css"
 import  { ArtistCard } from '../components/ArtistCard'
 import { TrackList } from '../components/TrackList'
 import { useParams } from 'react-router-dom';
+import { useState, useEffect} from 'react'
 import { LikeButton } from '../components/LikeButton'
+import axios from 'axios'
 
 export function UserPage(params) {
 
-    let { id } = useParams();
-        //TODO add avatar link
+    const [profile, setProfile] = useState([]);
+
+    let { userID } = useParams();
+
+    useEffect(() => {
+        async function load_profile() {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/user/profile/${userID}/`,
+                    {
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
+                    }
+                );
+                console.log(response.data);
+                setProfile(response.data);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        load_profile()
+    }, []);
+
+    function renderPlaylists() {
+        var playlists = profile.playlist_set?.slice(0, 6).map(playlist => {
+            return <Col span={4} key={playlist.id}><CoverCard
+                img={playlist.cover}
+                id={playlist.id}
+                name={playlist.name} desc={profile.username} type={"playlist"} className="playlist-card" />
+            </Col>
+        }
+        )
+        return playlists
+    }
+    
     return(
-        <Space direction="vertical">  
+        <Space direction="vertical" style={{width: '100%'}}>
             <Row gutter={32}>
-                <Col><Avatar size={150}/> </Col>
-                <Col><h2>Profile Name {id}</h2></Col>
-                <Col><h2><LikeButton/> </h2></Col> 
-            </Row>      
+                <Col><Avatar size={150} src={profile?.image} /> </Col>
+                <Col><h2>{profile?.username} </h2></Col>
+                <Col><h2><LikeButton/> </h2></Col>
+            </Row>     
             
             <Divider>Playlists</Divider>
             <Row justify="space-around" type="flex">
-                <Col span={4} ><CoverCard 
-                    img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg" 
-                    name="Rouge Carpet Disaster" desc="Static Dress" className="playlist-card"/>
-                </Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" 
-                    name="White Pony" desc="Deftones" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg"
-                    name="aaaa" desc="bbb" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" name="aaaa" desc="bbb" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg" 
-                    name="aaaa" desc="bbb" className="playlist-card"/></Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" name="aaaa" desc="bbb" className="playlist-card"/></Col>
+                {renderPlaylists()}
             </Row>
             <Divider></Divider>
         </Space>

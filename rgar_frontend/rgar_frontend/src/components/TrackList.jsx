@@ -1,57 +1,106 @@
-import {Table, Space} from 'antd'
+import { Table, Space } from 'antd'
+import { getTrackFile } from '../services/GetTrackFile';
+import { useContext, useState, useEffect } from 'react';
+import { SongContext, QueueContext } from '../App';
+import axios from 'axios'
+import { AddToPlaylistModal } from './AddToPlaylistModal';
 
-const columns = [
-    {
-        title: 'N',
-        dataIndex: 'key',
-        key: 'key',
-        width: '5%'
-    },
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Listenings',
-        dataIndex: 'listenings',
-        key: 'listenings',
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-          <Space size="middle">
-            <a>Add to Favourite</a>
-            <a>Add to Playlist</a>
-            <a>Add to Queue</a>
-          </Space>
-        ),
-        width: '20%'
-      }
-]
 
-export function TrackList(props){
+export function TrackList(props) {
 
-    const data = [
+    
+
+    const [song, setSong] = useContext(SongContext);
+    const [queue, setQueue] = useContext(QueueContext);
+
+    const [data, setData] = useState([])
+    const [columns, setColumns] = useState([])
+    const [IDList, setIDList] = useState([])
+
+    const artistColumns = [
         {
-            key: '1',
-            name: 'Walk Away Slowly',
-            listenings: 3200000
+            title: 'N',
+            render: (item, record, index) => { return index + 1 },
+            width: '20%'
         },
         {
-            key: '2',
-            name: 'Bouquet',
-            listenings: 321433
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
-            key: '3',
-            name: 'Arms Like Teeth',
-            listenings: 32341351
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <AddToPlaylistModal track_id={record.key}/>
+                    <a onClick={e => { e.stopPropagation(); var newQueue = queue.slice(0, song + 1); newQueue.push(record.key, ...queue.slice(song + 1)); setQueue(newQueue) }}>Add to Queue</a>
+                </Space>
+            ),
+            width: '20%'
         }
-    ]
+    ];
 
-    return(
-        <Table columns={columns} dataSource={data} pagination={false}/>
-    )
+    const albumColumns = [
+        {
+            title: 'N',
+            render: (item, record, index) => { return index + 1 },
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Artist',
+            dataIndex: 'artist',
+            key: 'artist',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <AddToPlaylistModal track_id={record.key}/>
+                    <a onClick={e => { e.stopPropagation(); var newQueue = queue.slice(0, song + 1); newQueue.push(record.key, ...queue.slice(song + 1)); setQueue(newQueue) }}>Add to Queue</a>
+                </Space>
+            ),
+            width: '20%'
+        }
+    ];
+
+
+    useEffect(() => {
+        if (props.album) {
+            setColumns(albumColumns)
+            setData(props.songs?.map(song => ({
+                key: song.id, name: song.name,
+                artist: song.artist.toString()
+            })))
+        }
+        else {
+            setColumns(artistColumns)
+            setData(props.songs?.map(song => ({ key: song.id, name: song.name })))
+        }
+        setIDList(props.songs?.map(song => song.id))
+    }, [])
+
+    if (props.songs == undefined) {
+        return (
+            <></>
+        )
+    }
+    else {
+        return (
+            <Table dataSource={data} columns={columns} pagination={false}
+            onRow={(record, rowIndex) => {
+                return {
+                    onClick: async () => {setQueue(IDList); setSong(rowIndex);},
+                };
+            }} 
+            />
+        )
+    }
+
+
 }

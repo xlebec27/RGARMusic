@@ -1,9 +1,72 @@
-import {Space, Row, Col} from 'antd';
+import {Space, Row, Col, Button} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import { CoverCard } from '../components/CoverCard';
+import { useContext, useState, useEffect } from 'react';
+import { SongContext, QueueContext } from '../App';
+import axios from "axios"
 
 export function HomePage(){
     let navigate = useNavigate();
+
+    const [song, setSong] = useContext(SongContext);
+    const [queue, setQueue] = useContext(QueueContext);
+
+    const [recs, setRecs] = useState([]);
+    const [latest, setLatest] = useState([]);
+
+    useEffect(() => {
+        async function load_homepage() {
+            try {
+                const response = await axios.get("http://localhost:8000/api/user/recommend/?n=4",
+                    {
+                        headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
+                    }
+                );
+                console.log(response.data);
+                setRecs(response.data);
+            }
+            catch (error) {
+                console.error(error);
+            }
+            try {
+                const response = await axios.get("http://localhost:8000/api/user/albums/get-last/?n=4",
+                );
+                console.log(response.data);
+                setLatest(response.data);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        load_homepage()
+    }, []);
+
+
+    function renderRecs() {
+        var albums = recs?.map(album => {
+            return <Col span={4} key={album.id}><CoverCard
+                id={album.id}
+                img={"http://localhost:8000/" + album.cover}
+                name={album.name} desc={album.artist[0].name} type={"album"}/>
+            </Col>
+        }
+        )
+        return albums
+    }
+
+
+    function renderLatest() {
+        var albums = latest?.map(album => {
+            return <Col span={4} key={album.id}><CoverCard
+                id={album.id}
+                img={album.cover}
+                name={album.name} desc={album.artist[0].name} type={"album"}/>
+            </Col>
+        }
+        )
+        return albums
+    }
+
 
     const routeChange = () =>{
         navigate('/login');
@@ -13,27 +76,15 @@ export function HomePage(){
         <Space direction="vertical" style={{width: '100%'}}>
             <h3>Popular</h3>
             <Row justify="space-around">
-                <Col span={4}><CoverCard 
-                    img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg" 
-                    name="Rouge Carpet Disaster" desc="Static Dress"/>
-                </Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" name="White Pony" desc="Deftones"/></Col>
-                <Col span={4}><CoverCard img="https://lastfm.freetls.fastly.net/i/u/ar0/f75fb3b1b05042e35dd3597efe3d8f27.jpg" name="aaaa" desc="bbb"/></Col>
-                <Col span={4}><CoverCard img="https://upload.wikimedia.org/wikipedia/ru/0/05/Deftones_White_Pony.jpeg" name="aaaa" desc="bbb"/></Col>
+                {renderLatest()}
             </Row>
             <h3>Recommended</h3>
             <Row justify="space-around">
-                <Col span={4}>col-4</Col>
-                <Col span={4}>col-4</Col>
-                <Col span={4}>col-4</Col>
-                <Col span={4}>col-4</Col>
+                {renderRecs()}
             </Row>
             <h3>Latest</h3>
             <Row justify="space-around">
-                <Col span={4}>col-4</Col>
-                <Col span={4}>col-4</Col>
-                <Col span={4}>col-4</Col>
-                <Col span={4}>col-4</Col>
+                {renderLatest()}
             </Row>
         </Space>
 

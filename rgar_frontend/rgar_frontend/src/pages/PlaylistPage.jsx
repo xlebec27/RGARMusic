@@ -7,23 +7,22 @@ import { faCirclePlay, faBarsStaggered, faSquarePlus, faLink, faFlag } from '@fo
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useRef, useEffect, useContext } from 'react'
 import { ReportModal } from '../components/ReportModal'
-import { ArtistCard } from '../components/ArtistCard'
 import axios from 'axios'
 import { QueueContext, SongContext } from '../App'
 
-export function AlbumPage(params) {
+export function PlaylistPage(params) {
 
     const [copySuccess, setCopySuccess] = useState("")
     const textAreaRef = useRef(null)
     const [messageApi, contextHolder] = message.useMessage();
-    const [album, setAlbum] = useState(null)
+    const [playlist, setPlaylist] = useState(null)
     const [loaded, setLoaded] = useState(false)
     const [queue, setQueue] = useContext(QueueContext);
     const [song, setSong] = useContext(SongContext);
     const [IDList, setIDList] = useState([]);
 
 
-    let { albumID } = useParams();
+    let { playlistID } = useParams();
 
     async function copyToClip() {
         await navigator.clipboard.writeText(location.href);
@@ -35,17 +34,17 @@ export function AlbumPage(params) {
     }
 
     useEffect(() => {
-        async function load_album() {
+        async function load_playlist() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/user/album/${albumID}/`,);
-                setAlbum(response.data);
-                setIDList(response.data.track_set.map(a => a.id));
+                const response = await axios.get(`http://localhost:8000/api/user/playlist/${playlistID}/`,);
+                setPlaylist(response.data);
+                setIDList(response.data.track.map(a => a.id));
                 setLoaded(true)
             } catch (error) {
                 console.log(error);
             }
         }
-        load_album();
+        load_playlist();
     }, []);
 
     if (loaded) {
@@ -56,12 +55,12 @@ export function AlbumPage(params) {
                     justify="start"
                     gutter={16}>
                     <Col span={6}>
-                        <Image src={album?.cover} width={"90%"} />
+                        <Image src={playlist?.cover} width={"90%"} />
                     </Col >
                     <Col span={18}>
-                        <h1>{album?.name}</h1>
-                        <Link to={`/artist/${album?.artist[0].name}`}><h2>{album?.artist[0].name}</h2></Link>
-                        <div>{album?.track_set?.length} {album?.track_set?.length == 1 ? "track" : "tracks"}</div>
+                        <h1>{playlist?.name}</h1>
+                        <Link to={`/user/${playlist?.user.id}`}><h2>{playlist?.user.name}</h2></Link>
+                        <div>{playlist?.track?.length} {playlist?.track?.length == 1 ? "track" : "tracks"}</div>
                     </Col>
                 </Row>
                 <Row gutter={16} align="bottom" justify="start">
@@ -70,7 +69,7 @@ export function AlbumPage(params) {
                     </Col>
                     <Col>
                         <div>
-                            <h4><LikeButton url={'http://localhost:8000/api/user/like/album/'} body={{id: albumID}} /></h4>
+                            <h4><LikeButton url={'http://localhost:8000/api/user/like/playlist/'} body={{id: playlistID}} /></h4>
                         </div>
                     </Col>
                     <Col>
@@ -86,7 +85,7 @@ export function AlbumPage(params) {
                         <h4 style={{ cursor: "pointer" }}><ReportModal /></h4>
                     </Col>
                 </Row>
-                <TrackList songs={album?.track_set} album={true} />
+                <TrackList songs={playlist?.track} album={true} />
             </Space>
         )
     }

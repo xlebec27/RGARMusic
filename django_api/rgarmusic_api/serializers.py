@@ -3,7 +3,8 @@ from django.contrib.auth.hashers import make_password
 from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 from rgarmusic_api.models import *
-
+from django.views.generic.detail import SingleObjectMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 User = get_user_model()
@@ -19,14 +20,31 @@ class UserDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserData
-        fields = ['id','email', 'image', 'MyplayList', 'username']
+        fields = "__all__"
 
+class UserNameDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserData
+        fields = ['id', 'email', 'username', 'image']
+
+class WithVisitCounterMixin(SingleObjectMixin):
+
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        obj.visitors.add(self.request.user)
+        return obj
+
+    def get_context_data(self, *args, **kwargs):
+        cd = super().get_context_data(*args, **kwargs)
+        cd['visits'] = self.object.visitors.count()
+        return cd
 
 
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
-        fields = ['name', 'picture', 'genre']
+        fields = ['name', 'picture']
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,73 +53,94 @@ class TagSerializer(serializers.ModelSerializer):
 
 class TrackFileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TrackFile
+        model = Track
         # fields = "__all__"
-        fields = ["test"]
+        fields = ["link"]
 
+# class TrackDataSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Track
+#         fields = ['id','name', 'artist', 'album', 'listens']
 
 class TrackSerializer(serializers.ModelSerializer):
-    file = TrackFileSerializer(many=False, required=True)
+    # file = TrackFileSerializer(many=False, required=True)
 
     class Meta:
         model = Track
-        fields = ['id','name', 'duration', 'artist', 'file']
+        fields = ['id','name', 'artist', 'link']
 
     def create(self, validated_data):
-        file_data = validated_data.pop('file')
         artist_data = validated_data.pop('artist')
         tags = validated_data.pop('tags')
 
-        track_file = TrackFile.objects.create(**file_data)
-        track = Track.objects.create(file=track_file, **validated_data)
+        track = Track.objects.create(**validated_data)
         track.artist.set(artist_data)
 
         return track
+    
 class AlbumSerializer(serializers.ModelSerializer):
     artist = serializers.PrimaryKeyRelatedField(queryset=Artist.objects.all(), many=True)
     tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True)
-    tracks = TrackSerializer(many=True)
+    track_set = TrackSerializer(many=True)
 
     class Meta:
         model = Album
-        fields = ['id','name', 'genre', 'artist', 'tracks', 'tags']
-
-        # fields = ['name', 'genre', 'artist', 'tracks']
+        fields = ['id','name', 'cover', 'artist', 'tags', 'track_set']
 
     def create(self, validated_data):
+        print(validated_data)
         artists = validated_data.pop('artist')
         tags = validated_data.pop('tags')
-        tracks_data = validated_data.pop('tracks')
+        tracks_data = validated_data.pop('track_set')
 
         album = Album.objects.create(**validated_data)
         album.artist.set(artists)
         album.tags.set(tags)
 
         for track_data in tracks_data:
-            file_data = track_data.pop('file')
+            # file_data = track_data.pop('file')
             artists = track_data.pop('artist')
 
-            track_file = TrackFile.objects.create(**file_data)
-            track = Track.objects.create(album=album, file=track_file, **track_data)
+            # track_file = TrackFile.objects.create(**file_data)
+            # track = Track.objects.create(album=album, file=track_file, **track_data)
+            track = Track.objects.create(album=album,  **track_data)
+
             track.artist.set(artists)
             track.save()
 
-            album.tracks.add(track)
         return album
 
 class TrackGetSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Track
-        fields = ['id','name', 'duration', 'artist']
+        fields = ['id','name',  'artist', 'album']
 
 class AlbumGetSerializer(serializers.ModelSerializer):
-    tracks = TrackGetSerializer(many=True, read_only=True)
+    track_set = TrackGetSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     artist = ArtistSerializer(many=True, read_only=True)
 
     class Meta:
         model = Album
-        fields = '__all__'
+        fields = "__all__"
+
+    
+class TrackGetWithAlbumSerializer(serializers.ModelSerializer):
+    album = AlbumGetSerializer(read_only=True)
+
+    class Meta:
+        model = Track
+        fields = ['id','name',  'artist', 'album']
+
+
+class AlbumProfileGetSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Album
+        fields = ['id', 'name', 'cover', 'artist']
 
 
 class ArtistDataSerializer(serializers.ModelSerializer):
@@ -109,7 +148,7 @@ class ArtistDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Artist
-        fields = ['name', 'genre', 'album_list', 'track_list']
+        fields = ['name', 'album_list', 'track_list', 'picture']
 
     track_list = serializers.SerializerMethodField()
 
@@ -120,14 +159,13 @@ class ArtistDataSerializer(serializers.ModelSerializer):
         return track_serializer.data
 
 
-class playListSerializer(serializers.ModelSerializer) :
+class PlaylistSerializer(serializers.ModelSerializer):
     cover = serializers.FileField(required=False)
     track = TrackGetSerializer(many=True, required=False)
-    user = UserDataSerializer(required=False)
-
+    user = UserNameDataSerializer(required=False, read_only=True)
 
     class Meta:
-        model = MyPlaylist
+        model = Playlist
         fields = "__all__"
 
     def update(self, instance, validated_data):
@@ -137,51 +175,71 @@ class playListSerializer(serializers.ModelSerializer) :
 
         # Add the tracks to the playlist
         tracks = Track.objects.filter(id__in=track_id)
-        playList = MyPlaylist.objects.filer(id__in=playList_id)
+        playList = Playlist.objects.filter(id__in=playList_id)
         playList.track.add(*tracks)
         playList.save()
 
         return instance
 
-class playListGetSerializer(serializers.ModelSerializer) :
+class PlaylistGetSerializer(serializers.ModelSerializer) :
     cover = serializers.FileField(required=False)
     # track = TrackGetSerializer(many=True, required=False)
     # user = UserDataSerializer(required=False)
 
 
     class Meta:
-        model = MyPlaylist
+        model = Playlist
         fields = ['id','name', 'cover']
 
-class likedPlayListSerializer(serializers.ModelSerializer):
-    playlist = playListGetSerializer(many=True)
+
+# class likedPlayListSerializer(serializers.ModelSerializer):
+#     playlist = playListGetSerializer(many=True)
+
+#     class Meta:
+#         model = LikedPlayList
+#         exclude = ('user', 'id')
+
+class ArtistGetSerializer(serializers.ModelSerializer):
+    picture = serializers.FileField(required=False)
 
     class Meta:
-        model = LikedPlayList
-        exclude = ('user', 'id')
+        model = Artist
+        fields = ['name', 'picture']
 
-class likeAlbumSerializer(serializers.ModelSerializer):
-    album = AlbumGetSerializer(many=True)
 
-    class Meta:
-        model = LikeUserAlbum
-        exclude = ('id', )
+# class likeArtistSerializer(serializers.ModelSerializer):
+#     artist = ArtistSerializer(many=True)
 
-class likeArtistSerializer(serializers.ModelSerializer):
-    artist = ArtistSerializer(many=True)
-
-    class Meta:
-        model = LikeUserArtist
-        exclude = ('id', )
+#     class Meta:
+#         model = LikeUserArtist
+#         exclude = ('id', )
 
 class UserDataSerializer(serializers.ModelSerializer):
-    MyplayList = playListGetSerializer(many=True)
-    LikedPlayLists = likedPlayListSerializer(many=False, read_only=True)
-    AlbumsLikes = likeAlbumSerializer(many=False, read_only=True)
-    ArtistsLikes = likeArtistSerializer(many=False, read_only=True)
+    playlist_set = PlaylistGetSerializer(many=True, read_only=True)
+    liked_playlists = PlaylistGetSerializer(many=True, read_only=True)
+    albums = AlbumProfileGetSerializer(many=True, read_only=True)
+    artists = ArtistGetSerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
 
     class Meta:
         model = UserData
-        fields = ['id', 'email', 'username','image', 'MyplayList', 'LikedPlayLists', 'AlbumsLikes', 'ArtistsLikes']
+        fields = ['id', 'email', 'username', 'image', 'tags' ,'playlist_set', 'liked_playlists', 'albums', 'artists']
 
 
+class StreamSerializer(serializers.ModelSerializer):
+
+    user = UserDataSerializer(many=False, read_only=True)
+    track = TrackSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Stream
+        fields = ['streams', 'track', 'user']
+
+    def create(self, validated_data):
+        track = validated_data.pop('track')
+        user = validated_data.pop('user')
+        track = Track.objects.filter(id__in=track)
+        user = UserData.objects.filter(id__in=user)
+        stream = Stream.objects.create(streams = 1)
+        stream.user.set(user)
+        stream.track.set(track)

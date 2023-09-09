@@ -1,13 +1,17 @@
-import {Link} from 'react-router-dom'
-import {Row, Col, Space,  Input, Avatar, Upload, Button} from 'antd'
+import { Link } from 'react-router-dom'
+import { Row, Col, Space, Input, Avatar, Upload, Button } from 'antd'
 import { useState, useEffect } from 'react'
-import {useNavigate, Outlet} from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
+import axios from 'axios'
 
-export function SettingsPage(){
+export function SettingsPage() {
 
-    const [user, setUser] = useState({})
+    // const [user, setUser] = useState({})
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
+    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("")
+    const [username, setUsername] = useState("")
 
     useEffect(() => {
         if (!selectedFile) {
@@ -29,15 +33,35 @@ export function SettingsPage(){
         }
 
         setSelectedFile(e.file)
-        setAlbum({ ...album, cover: e.file })
-        console.log('album ', album)
     }
 
     let navigate = useNavigate();
 
-    const postUser = () => {
-        if (true) {
+    async function postUser() {
+        try {
+            const body = new FormData()
+            if (email != "" && email != undefined){
+                body.append('email', email)
+            }
+            if (username != "" && username != undefined){
+                body.append('username', username)
+            }
+            if (password != "" && password != undefined){
+                body.append('password', password)
+            }
+            if (selectedFile != undefined){
+                body.append('image', selectedFile)
+            }
+            const response = await axios.patch("http://localhost:8000/api/user/my-profile/",
+                body,
+                {
+                    headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
+                }
+            );
             navigate('/profile');
+
+        } catch (error) {
+            console.error(error);
         }
     }
 
@@ -46,13 +70,13 @@ export function SettingsPage(){
         navigate('/login');
     }
 
-    return(
-        <Row justify="center" style={{width:"100%"}} gutter={[16, 16]} size="large">
-            <Space direction="vertical" style={{textAlign:"center", paddingTop:"0px"}}>
+    return (
+        <Row justify="center" style={{ width: "100%" }} gutter={[16, 16]} size="large">
+            <Space direction="vertical" style={{ textAlign: "center", paddingTop: "0px" }}>
                 <h2>Settings</h2>
-                <Input placeholder="Enter your email"/>
-                <Input placeholder="Enter your username"/>
-                <Upload 
+                <Input placeholder="Enter your email" onChange={(e) => { setEmail(e.target.value) }} />
+                <Input placeholder="Enter your username" onChange={(e) => { setUsername(e.target.value) }} />
+                <Upload
                     onChange={onSelectFile}
                     beforeUpload={() => {
                         return false;
@@ -60,20 +84,23 @@ export function SettingsPage(){
                     maxCount={1}
                     accept="image/png, image/jpeg"
                 >
-                    <Button style={{width: '100%'}} >Click to Upload</Button>
+                    <Button style={{ width: '100%' }} >Click to Upload</Button>
                 </Upload>
-                {selectedFile &&  <Avatar src={preview} size={192}/> }
-                <Input.Password placeholder="input password"/>
-                <Button type="primary" shape="round" size={'large'} onClick={postUser} style={{width: '100%'}}>
-                Confrim changes
+                {selectedFile && <Avatar src={preview} size={192} />}
+                <Input.Password placeholder="input password" name="password" onChange={(e) => { setPassword(e.target.value) }} />
+                <Button type="primary" shape="round" size={'large'} onClick={postUser} style={{ width: '100%' }}>
+                    Confrim changes
                 </Button>
-                <Link to='/add/album'>Add Album</Link>
-                <Link to='/add/artist'>Add Artist</Link>
+                <Link to='/like-tags'>Change preferred tags</Link>
+                {(localStorage.getItem('isAdmin')) ? <><Link to='/add/album'>Add Album</Link><Link to='/add/artist'>Add Artist</Link>
+                <Link to='/add/tag'>Add Tag</Link></> : <></>}
                 
+                
+
                 <Button type="primary" shape="round" size={'large'} onClick={logout}>
-                Log out
+                    Log out
                 </Button>
-                </Space>
+            </Space>
         </Row>
     )
 }

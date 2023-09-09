@@ -1,7 +1,10 @@
-import { Button, Form, Input, Popconfirm, Table, Upload, Space } from 'antd';
+import { Button, Form, Input, Popconfirm, Table, Upload, Space, Select } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import '../assets/AlbumCreate.css'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { cropImage } from '../features/cropImage';
+
 
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -81,30 +84,75 @@ const EditableCell = ({
     return <td {...restProps}>{childNode}</td>;
 };
 
-export function CreateAlbum(){
+export function CreateAlbum() {
 
-    async function PostAlbum(album, dataSource, e){
-        console.log('try', JSON.stringify({ album, dataSource }))
+    let navigate = useNavigate();
+
+    const [allTags, setAllTags] = useState([])
+    const [allArtists, setAllArtists] = useState([])
+
+    useEffect(() => {
+        async function load_data() {
+            try {
+                const getArtists = await axios.get("http://localhost:8000/api/user/artists/");
+                var artistsResponse = getArtists.data.map(artist => { return { value: artist.name } })
+                setAllArtists(artistsResponse)
+            }
+            catch (error) {
+                console.error(error);
+            }
+            try {
+                const getTags = await axios.get("http://localhost:8000/api/user/all-tags/");
+                var tagsResponse = getTags.data.map(tag => { return { label: tag.name, value: tag.id } })
+                setAllTags(tagsResponse)
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        load_data()
+    }, []);
+
+
+    async function PostAlbum(album, data, e) {
+        const track_set = data.map((track) => { return { name: track.name, artist: track.artist, link: track.file } })
+        album.track_set = track_set
         e.preventDefault();
+        const formData = new FormData();
+        formData.append("name", album.name)
+        for (var i = 0; i < album.artist.length; i++) {
+            formData.append('artist', album.artist[i]);
+        }
+        for (var i = 0; i < album.tags.length; i++) {
+            formData.append('tags', album.tags[i]);
+        }
+        // formData.append("artist[]", album.artist)
+        // formData.append("tags[]", album.tags)
+        console.log(cropImage(album.cover));
+        formData.append("cover", cropImage(album.cover))
+        for (var i = 0; i < album.track_set.length; i++) {
+            formData.append(`track_set[${i}]name`, album.track_set[i].name);
+            formData.append(`track_set[${i}]artist`, album.track_set[i].artist);
+            formData.append(`track_set[${i}]link`, album.track_set[i].link);
+        }
         try {
-            console.log('intry', JSON.stringify({ album, dataSource }))
-            
-            const response = await axios.post("http://localhost:8000/api/admin/createAlbum/",
-                { name: album?.name, genre: album?.genre, artist: album?.artist, cover: album?.cover , tracks: dataSource },
+            const response = await axios.post("http://localhost:8000/api/admin/create-album/",
+                formData,
                 {
                     headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
-                    
+
                 }
-            );
+            )
             console.log(JSON.stringify(response.data));
             navigate("/settings");
         } catch (error) {
             console.log(error);
-            if(error?.response?.status === 401){
+            if (error?.response?.status === 401) {
                 localStorage.clear();
                 navigate("/login");
             }
         }
+        console.log(formData);
     }
 
     const [dataSource, setDataSource] = useState([
@@ -119,8 +167,8 @@ export function CreateAlbum(){
     const [album, setAlbum] = useState({
         name: '',
         artist: '',
-        genre: '',
-        img: undefined
+        tags: '',
+        cover: undefined
     })
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
@@ -241,6 +289,17 @@ export function CreateAlbum(){
             }),
         };
     });
+
+    const handleArtistsChange = (artist) => {
+        console.log(artist);
+        setAlbum({ ...album, artist: artist });
+    };
+
+    const handleTagsChange = (tags) => {
+        console.log(tags);
+        setAlbum({ ...album, tags: tags });
+    };
+
     return (
         <Space direction="vertical" style={{ width: "100%" }}>
             <Input placeholder="Album name" size="large"
@@ -249,19 +308,29 @@ export function CreateAlbum(){
                     console.log('album ', album)
                 }
                 } />
-                <Input placeholder="Artist" size="large"
-                onChange={(e) => {
-                    setAlbum({ ...album, artist: e.target.value });
-                    console.log('album ', album)
-                }
-                } />
-                <Input placeholder="Genre" size="large"
-                onChange={(e) => {
-                    setAlbum({ ...album, genre: e.target.value });
-                    console.log('album ', album)
-                }
-                } />
-            <Upload 
+            <Select
+                key="artistSelect"
+                mode="tags"
+                allowClear
+                style={{
+                    width: '100%',
+                }}
+                placeholder="Select artists"
+                onChange={handleArtistsChange}
+                options={allArtists}
+            />
+            <Select
+                key="tagsSelect"
+                mode="multiple"
+                allowClear
+                style={{
+                    width: '100%',
+                }}
+                placeholder="Select tags"
+                onChange={handleTagsChange}
+                options={allTags}
+            />
+            <Upload
                 onChange={onSelectFile}
                 beforeUpload={() => {
                     return false;
@@ -271,7 +340,7 @@ export function CreateAlbum(){
             >
                 <Button>Click to Upload</Button>
             </Upload>
-            {selectedFile &&  <img src={preview} style={{width:"20%"}}/> }
+            {selectedFile && <img src={preview} style={{ width: "20%" }} />}
             <Button
                 onClick={handleAdd}
                 type="primary"

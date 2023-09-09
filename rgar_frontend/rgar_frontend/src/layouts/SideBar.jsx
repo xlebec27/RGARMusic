@@ -1,7 +1,9 @@
 import { Layout, Menu } from 'antd';
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 // import {  PlayerComponent } from '../components/Player';
+import { MusicPlayer } from '../components/MusicPlayer';
+import rgar from "../assets/logo/rgar.svg"
 
 const { Sider, Content, Footer } = Layout;
 
@@ -32,6 +34,8 @@ const items = [         //TODO add icons
 
 export function SideBar() {
 
+
+
     let navigate = useNavigate();
 
     const onClick = (e) => {
@@ -42,6 +46,7 @@ export function SideBar() {
     const [current, setCurrent] = useState('home');
 
     return (
+
         <Layout>
             <Layout hasSider>
                 <Sider
@@ -54,8 +59,13 @@ export function SideBar() {
                         bottom: 0,
                         backgroundColor: '#fff'
                     }}>
-                    <div>
-                        Logo
+                    <div style={{paddingTop: "10px"}}>
+                        <object type="image/svg+xml"
+                            data={rgar}
+                            class="logo"
+                            style={{width: "170px", paddingLeft: "5px", paddingRight: "5px"}}>
+                            RGAR Logo
+                        </object>
                     </div>
                     <Menu mode="inline" onClick={onClick} items={items} />
                 </Sider>
@@ -67,7 +77,8 @@ export function SideBar() {
                     }}
                 >
                     <Content style={{
-                        margin: '0px 0px 0',
+                        margin: '0px 0px 0 0',
+                        paddingBottom: "10%",
                         overflow: 'hidden',
                     }}
                     >
@@ -75,12 +86,20 @@ export function SideBar() {
                     </Content>
                 </Layout>
             </Layout>
-            <Footer >
-                {/* if (false) {    //change
-                    <PlayerComponent/>
-                } */}
-                </Footer>
+            <Footer style={{
+                position: 'fixed',
+                bottom: 0,
+                zIndex: 1,
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: "white",
+                margin: '0'
+            }}>
+                <MusicPlayer />
+            </Footer>
         </Layout>
+
     )
 
 }

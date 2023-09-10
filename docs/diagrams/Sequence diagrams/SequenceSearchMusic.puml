@@ -1,0 +1,29 @@
+@startuml
+autonumber
+
+actor "Пользователь" as Пользователь
+participant "Система" as Система
+database "База данных" as database
+
+autonumber
+activate Система
+activate Пользователь
+Пользователь -> Система: Ввод методанных музыки
+deactivate Пользователь
+Система -> database: запрос на музыку
+deactivate Система
+activate database
+
+database -> database:Проверка
+database-->Система: Ответ
+deactivate database
+
+activate Система
+Система -->Пользователь: "По вашему запросу ничего не найдено"
+activate Пользователь
+deactivate Пользователь
+Система -->Пользователь: Вывод найденной музыки
+deactivate Система
+activate Пользователь
+deactivate Пользователь
+@enduml

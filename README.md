@@ -8,6 +8,8 @@
 * [Диаграммы](https://github.com/xlebec27/RGARMusic/tree/main/docs/diagrams)
 * [Презентация проекта](https://youtu.be/MdEdVXsQTWA)
 * [Figma](https://www.figma.com/file/Jn7LazBfpWcCsDmrTICq29/Untitled?node-id=6:6&t=ki3V1joEp7UazaI6-1)
+## Ссылка на основную документацию
+* [Видеопрезентация](https://youtu.be/k6KyaV06AgI)
 
 ## Контактные данные
 

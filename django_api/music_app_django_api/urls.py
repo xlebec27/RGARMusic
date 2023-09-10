@@ -25,8 +25,6 @@ from .yasg import urlpatterns as swagger
 from django.conf import settings
 from django.conf.urls.static import static
 
-# schema_view = get_swagger_view(title='Pastebin API')
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('rgarmusic_api.urls')),

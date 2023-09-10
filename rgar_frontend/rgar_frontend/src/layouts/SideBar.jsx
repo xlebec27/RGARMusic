@@ -1,13 +1,12 @@
 import { Layout, Menu } from 'antd';
 import { useState, createContext } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
-// import {  PlayerComponent } from '../components/Player';
 import { MusicPlayer } from '../components/MusicPlayer';
 import rgar from "../assets/logo/rgar.svg"
 
 const { Sider, Content, Footer } = Layout;
 
-const items = [         //TODO add icons
+const items = [
     {
         label: 'Profile',
         key: 'profile'

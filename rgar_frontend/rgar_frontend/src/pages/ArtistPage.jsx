@@ -7,7 +7,6 @@ import { useState, useRef, useEffect, useContext } from 'react'
 import axios from "axios"
 import { LikeButton } from '../components/LikeButton'
 import { faCirclePlay, faBarsStaggered, faSquarePlus, faLink, faFlag } from '@fortawesome/free-solid-svg-icons'
-import { ReportModal } from '../components/ReportModal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QueueContext, SongContext } from '../App'
 
@@ -90,13 +89,7 @@ export function ArtistPage(params){
                         <h4 style={{ cursor: "pointer" }} onClick={() => { var newQueue = queue.slice(0, song + 1); newQueue.push(...IDList, ...queue.slice(song + 1)); setQueue(newQueue) }}><FontAwesomeIcon icon={faBarsStaggered} /> Add to queue</h4>
                     </Col>
                     <Col>
-                        <h4 style={{ cursor: "pointer" }}><FontAwesomeIcon icon={faSquarePlus} /> Add to Playlist</h4>
-                    </Col>
-                    <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={copyToClip}><FontAwesomeIcon icon={faLink} /> Share</h4>
-                    </Col>
-                    <Col>
-                        <h4 style={{ cursor: "pointer" }}><ReportModal /></h4>
                     </Col>
                 </Row>
                 <Divider orientation="left">Popular Tracks</Divider>

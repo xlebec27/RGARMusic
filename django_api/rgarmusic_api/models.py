@@ -37,7 +37,6 @@ class UserData(AbstractBaseUser):
     username = models.CharField(max_length=100, unique=True)
     tags = models.ManyToManyField('Tag', related_name="user")
     liked_playlists = models.ManyToManyField('Playlist', related_name="LikedUsers")
-    # playlists = models.ManyToManyField('Playlist', related_name="CreatedUser")
     artists = models.ManyToManyField('Artist', related_name="LikedUsers")
     albums = models.ManyToManyField('Album', related_name="LikedUsers")
     users = models.ManyToManyField("self", symmetrical=False)     # migrate this
@@ -70,16 +69,6 @@ class Album(models.Model):
     cover = models.FileField(upload_to='static/album_avatar/',)
     artist = models.ManyToManyField(Artist, related_name="album_list")
     tags = models.ManyToManyField('Tag', related_name="album")
-
-
-# class WithVisitCounter(models.Model):
-#     visitors = models.ManyToManyField(
-#         to=settings.AUTH_USER_MODEL,
-#         related_name='%(model_name)s_visits'
-#     )
-
-#     class Meta:
-#         abstract = True
 
 
 class Track(models.Model):

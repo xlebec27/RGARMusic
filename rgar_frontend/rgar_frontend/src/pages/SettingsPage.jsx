@@ -3,6 +3,7 @@ import { Row, Col, Space, Input, Avatar, Upload, Button } from 'antd'
 import { useState, useEffect } from 'react'
 import { useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios'
+import { LikeTagsModal } from '../components/LikeTagsModal';
 
 export function SettingsPage() {
 
@@ -91,7 +92,8 @@ export function SettingsPage() {
                 <Button type="primary" shape="round" size={'large'} onClick={postUser} style={{ width: '100%' }}>
                     Confrim changes
                 </Button>
-                <Link to='/like-tags'>Change preferred tags</Link>
+                <LikeTagsModal navTo={"/settings"} buttonText={"Change Liked Tags"}/>
+                {/* <Link to='/like-tags'>Change preferred tags</Link> */}
                 {(localStorage.getItem('isAdmin')) ? <><Link to='/add/album'>Add Album</Link><Link to='/add/artist'>Add Artist</Link>
                 <Link to='/add/tag'>Add Tag</Link></> : <></>}
                 

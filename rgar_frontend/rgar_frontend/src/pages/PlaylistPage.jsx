@@ -6,7 +6,6 @@ import { LikeButton } from '../components/LikeButton'
 import { faCirclePlay, faBarsStaggered, faSquarePlus, faLink, faFlag } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useRef, useEffect, useContext } from 'react'
-import { ReportModal } from '../components/ReportModal'
 import axios from 'axios'
 import { QueueContext, SongContext } from '../App'
 
@@ -75,15 +74,15 @@ export function PlaylistPage(params) {
                     <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={() => { var newQueue = queue.slice(0, song + 1); newQueue.push(...IDList, ...queue.slice(song + 1)); setQueue(newQueue) }}><FontAwesomeIcon icon={faBarsStaggered} /> Add to queue</h4>
                     </Col>
-                    <Col>
+                    {/* <Col>
                         <h4 style={{ cursor: "pointer" }}><FontAwesomeIcon icon={faSquarePlus} /> Add to Playlist</h4>
-                    </Col>
+                    </Col> */}
                     <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={copyToClip}><FontAwesomeIcon icon={faLink} /> Share</h4>
                     </Col>
-                    <Col>
+                    {/* <Col>
                         <h4 style={{ cursor: "pointer" }}><ReportModal /></h4>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <TrackList songs={playlist?.track} album={true} />
             </Space>

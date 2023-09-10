@@ -2,6 +2,7 @@ import { Row, Col, Space, Input, Avatar, Upload, Button } from 'antd'
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from "axios";
+import { LikeTagsModal } from '../components/LikeTagsModal';
 
 export function RegistrationPage() {
 
@@ -91,13 +92,11 @@ export function RegistrationPage() {
                     maxCount={1}
                     accept="image/png, image/jpeg"
                 >
-                    <Button style={{ width: '100%' }} >Click to Upload</Button>
+                    <Button style={{ width: '100%' }} >Upload Image</Button>
                 </Upload>
                 {selectedFile && <Avatar src={preview} size={192} />}
                 <Input.Password placeholder="input password" onChange={(e) => { setPassword(e.target.value) }} />
-                <Button type="primary" shape="round" size={'large'} onClick={register} style={{ width: '100%' }}>
-                    Register
-                </Button>
+                <LikeTagsModal navTo={"/home"} buttonText={"Register"}/>
                 <Link to='/login'>Back to login page</Link>
             </Space>
 

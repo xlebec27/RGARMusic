@@ -104,7 +104,7 @@ export function SearchPage(params) {
             return <Col span={4}><CoverCard
                 img={track.album.cover}
                 id={track.album.id}
-                name={track.name} desc={track.artist.toString()} className="playlist-card" />
+                name={track.name} desc={track.artist.toString()} type={"album"} className="playlist-card" />
             </Col>
         }))
         return favourite;

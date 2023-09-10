@@ -5,4 +5,5 @@ export function cropImage(image){
     if (image.width > image.height) {
         image.width = image.height
     }
+    return image
 }

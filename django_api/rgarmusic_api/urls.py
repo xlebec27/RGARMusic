@@ -35,10 +35,13 @@ urlpatterns = [
     path('user/like/tag/', LikeTags.as_view()), # Добавление, удаление тега юзеру и вывод списка тегов
     path('user/like/users/', LikeTags.as_view()), # Добавление, удаление  лайкнутых пользователей юзеру и вывод их списка
 
-    path('admin/tags/', tagView.as_view()), # Создание и вывод всех тегов
+    path('admin/tags/', TagView.as_view()), # Создание и вывод всех тегов
     path('admin/users/', allUser.as_view()), # Все пользователи
     path('admin/create-album/', AlbumCreateView.as_view()), # Создание альбома
     path('admin/create-artist/', CreateArtist.as_view()), # Создание артиста
+    path('admin/delete-album/', AlbumDeleteView.as_view()),
+    path('admin/delete-artist/', ArtistDeleteView.as_view()),
+    path('admin/delete-tag/', TagDeleteView.as_view()),
 
     path('user/artists/search/', ArtistSearch.as_view()), # Поиск артиста
     path('user/albums/search/', AlbumSearch.as_view()), # Поиск альбома

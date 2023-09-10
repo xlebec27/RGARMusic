@@ -1,10 +1,26 @@
 import { useEffect, useState } from 'react'
 import axios from "axios"
-import { Space, Divider, Row, Col, Button } from 'antd'
+import { Space, Divider, Row, Col, Button, Modal } from 'antd'
 import { useNavigate } from 'react-router-dom';
 
 
-export function LikeTagsPage() {
+export function LikeTagsModal({navTo, buttonText}) {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+
+    function showModal () {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    function closeModal () {
+        setIsModalOpen(false);
+    };
+
     const [allTags, setAllTags] = useState([]);
     const [likedTags, setLikedTags] = useState([]);
 
@@ -12,7 +28,7 @@ export function LikeTagsPage() {
 
     useEffect(() => {
         console.log("tags");
-        async function load_tags(){
+        async function load_tags() {
             try {
                 const response = await axios.get("http://localhost:8000/api/user/all-tags/",
                     {
@@ -26,7 +42,7 @@ export function LikeTagsPage() {
                 console.error(error);
             }
             try {
-                const response = await axios.get("http://localhost:8000/api/user/profile/"+ localStorage.getItem("userID") +"/",
+                const response = await axios.get("http://localhost:8000/api/user/profile/" + localStorage.getItem("userID") + "/",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
@@ -39,7 +55,7 @@ export function LikeTagsPage() {
             }
         }
         load_tags()
-        
+
         console.log(allTags);
     }, []);
 
@@ -59,15 +75,15 @@ export function LikeTagsPage() {
             }
             else {
                 const response = await axios.delete("http://localhost:8000/api/user/like/tag/",
-                    
+
                     {
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                         data: JSON.stringify({ id }),
                     }
-                    
+
                 );
                 console.log(response.data);
-                setLikedTags(likedTags => likedTags.filter((tag)=> tag.id != id ))
+                setLikedTags(likedTags => likedTags.filter((tag) => tag.id != id))
             }
 
         }
@@ -77,23 +93,32 @@ export function LikeTagsPage() {
     }
 
 
-    function renderTags(){
-        var tags = allTags.map(tag =>
-            {return <Col span={8} key={tag.id} >{likedTags.some(e => e.id === tag.id) ? <Button onClick={() => tagOnClick(tag.id, false)}>{tag.name}</Button>
-                                                                                        : <Button onClick={() => tagOnClick(tag.id, true)} ghost>{tag.name}</Button>}</Col>})
+    function renderTags() {
+        var tags = allTags.map(tag => {
+            return <Col span={8} key={tag.id} >{likedTags.some(e => e.id === tag.id) ? <Button onClick={() => tagOnClick(tag.id, false)} type="primary">{tag.name}</Button>
+                : <Button onClick={() => tagOnClick(tag.id, true)}>{tag.name}</Button>}</Col>
+        })
         return tags
-            
+
     }
 
 
-    return(
-        <Space direction="vertical" style={{width:"100%", textAlign:"center", paddingTop:"5%"}}>
-            <Row justify="center" type="flex">
-                {renderTags()}
-            </Row>
-            <Row type="flex">
-                <Button type="primary" shape="round" size={'large'} onClick={() => { navigate("/profile") }}>Confirm</Button>
-            </Row>
-        </Space>
+    return (
+        <>
+            <Button type="primary" shape="round" size={'large'} onClick={e => {showModal(); }}>{buttonText}</Button>
+            <Modal title="Like Tags" open={isModalOpen} onCancel={handleCancel}
+                footer={[
+                    <Button key="back" onClick={() => {closeModal(); navigate(navTo);}}>
+                        Confirm
+                    </Button>]}>
+                <Space direction="vertical" wrap style={{ width: "100%", textAlign: "center", paddingTop: "5%" }}>
+                    <Row justify="center" type="flex">
+                        {renderTags()}
+                    </Row>
+                </Space>
+            </Modal>
+
+        </>
+
     )
 }

@@ -1,8 +1,8 @@
 import { Row, Col, Space, Input, Avatar, Upload, Button } from 'antd'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createArtist } from '../lib/AxiosServices'
 import axios from 'axios'
+import { cropImage } from '../features/cropImage'
 
 export function AddArtistPage() {
 
@@ -41,7 +41,7 @@ export function AddArtistPage() {
             console.log(JSON.stringify({ name, img }))
 
             const response = await axios.post("http://localhost:8000/api/admin/create-artist/",
-                { name: name, picture: img },
+                { name: name, picture: cropImage(img) },
                 {
                     headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
 

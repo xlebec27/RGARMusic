@@ -12,7 +12,6 @@ import { SettingsPage } from "../pages/SettingsPage";
 import { UserPage } from "../pages/UserPage";
 import { AddAlbumPage } from "../pages/AddAlbumPage";
 import { RegistrationPage } from "../pages/RegistrationPage";
-// import { action as loginAction } from "../pages/LoginPage";
 import { AddArtistPage } from "../pages/AddArtistPage";
 import { LikeTagsPage } from "../pages/LikeTagsPage";
 import { AddTagPage } from "../pages/AddTagPage";
@@ -27,12 +26,6 @@ const router = createBrowserRouter(
         element={<LoginPage />}
         errorElement={<ErrorPage />}
       />
-      {/* <Route
-            path="/login"
-            element={<LoginPage/>}
-            errorElement={<ErrorPage/>}
-            action={loginAction}
-          /> */}
       <Route
         path="/login"
         element={<LoginPage />}

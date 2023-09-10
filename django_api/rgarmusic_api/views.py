@@ -21,6 +21,11 @@ class AlbumCreateView(generics.CreateAPIView): # Создание альбома
     serializer_class = AlbumSerializer
     permission_classes = [IsAdminUser]
 
+class AlbumDeleteView(generics.DestroyAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = [IsAdminUser]
+
 class allUser(generics.ListAPIView): # Все юзеры (Админ)
     queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
@@ -31,7 +36,17 @@ class CreateArtist(generics.CreateAPIView): # Создать артиста (А�
     serializer_class = ArtistSerializer
     permission_classes = [IsAdminUser, ]
 
-class tagView(generics.ListCreateAPIView) : # Создание и вывод всех тегов (Админ)
+class ArtistDeleteView(generics.DestroyAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    permission_classes = [IsAdminUser, ]
+
+class TagView(generics.ListCreateAPIView) : # Создание и вывод всех тегов (Админ)
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [IsAdminUser, ]
+
+class TagDeleteView(generics.DestroyAPIView) : # Создание и вывод всех тегов (Админ)
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsAdminUser, ]

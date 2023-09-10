@@ -1,0 +1,24 @@
+.card-cover:hover{
+    transition: filter 0.2s;
+    filter: blur(8px)
+}
+
+/* .card-cover{
+    width: 250px;
+    height: 250px;
+} */
+
+.card-artist{
+    text-align: center;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+
+.card-meta-artist:hover{
+    font-weight: bolder;
+}
+
+.playlist-card{
+    width: 70%;
+}
+

@@ -1,0 +1,12 @@
+django_api/rgarmusic_api/migrations/*
+/django_api/static
+/django_api/venv
+/rgar_frontend/rgar_frontend/.vite
+/rgar_frontend/rgar_frontend/.yarn
+/rgar_frontend/rgar_frontend/.gitignore
+.idea
+/django_api/.idea
+/django_api/.vscode
+/django_api/Dockerfile
+/django_api/docker-compose.yml
+/django_api/.gitignore

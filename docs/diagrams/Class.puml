@@ -6,8 +6,8 @@ artist;
 album;
 dateUpdate;
 }
-class Track{
-nameTrack;
+class Song{
+songName;
 artist;
 album;
 lengthTime;
@@ -17,14 +17,14 @@ class Playlist{
 namePlaylist;
 creator;
 cover;
-trackList: List<Track>
+songList: List<Song>
 }
 class Album{
 artist;
 dateRelease;
 nameAlbum;
 cover;
-trackList: List<Track>;
+songList: List<Song>;
 tags;
 }
 class Artist{
@@ -32,7 +32,7 @@ tags;
 name;
 artistPicture;
 albumList: List<Album>;
-trackList: List<Track>;
+songList: List<Song>;
 }
 
 class Admin{
@@ -41,22 +41,22 @@ deleteContent()
 editContent()
 }
 class MusicPlayer{
-trackList: List<Track>;
+songList: List<Song>;
 volume;
 play()
 pause()
 changeVolume()
-shuffleTracks()
-switchTracks()
+shuffleSongs()
+switchSongs()
 }
 
 class User {
-nickName;
+userName;
 email;
 password;
 profilePicture;
-playlist:List<Playlist>;
-favorite;
+playlists: List<Playlist>;
+favorite: List<Song>;
 search()
 changeAccountInfo()
 checkStatistics()
@@ -70,12 +70,12 @@ deleteFromFavorite()
 }
 Admin-|>User:extends
 Album *--|>Artist
-Album *--|>Track
-MusicPlayer *--|>Track
+Album *--|>Song
+MusicPlayer *--|>Song
 User o--|>MusicPlayer
 Update o--|>Album
 Update o--|>Artist
-Playlist o--|>Track
-Artist o--|>Track
+Playlist o--|>Song
+Artist o--|>Song
 User o--|>Playlist
 @enduml

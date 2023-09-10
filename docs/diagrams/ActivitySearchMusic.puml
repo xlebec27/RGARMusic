@@ -2,11 +2,11 @@
 |#AntiqueWhite|Авторизованный пользователь|
 start
 :Заполнение формы;
-|#AntiqueWhite|UI|
+|#AntiqueWhite|Система|
 :Запрос на музыку;
 |#AntiqueWhite|База данных|
 :Проверка существования музыки;
-|#AntiqueWhite|UI|
+|#AntiqueWhite|Система|
 :Ответ от БД;
 |#AntiqueWhite|Авторизованный пользователь|
 if() then (Найдено)

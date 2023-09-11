@@ -13,6 +13,10 @@
 * [Видео по серверной части](https://drive.google.com/file/d/1ZQnbRAAQNsVivtYjVF-gmliZ_ZGN5niv/view?usp=sharing)
 * [Видео по клиентской части](https://drive.google.com/file/d/1LFycO-DAOyXghalkzWokY9aoRh1uOw6M/view?usp=sharing)
 
+## Веб сайт
+* [RGAR Music](45.146.166.248)
+* [Swagger](45.146.166.248/swagger/schema)
+
 ## Контактные данные
 
 **Аббасов Руслан Самирович (team lead)**

@@ -14,8 +14,8 @@
 * [Видео по клиентской части](https://drive.google.com/file/d/1LFycO-DAOyXghalkzWokY9aoRh1uOw6M/view?usp=sharing)
 
 ## Веб сайт
-* [RGAR Music](45.146.166.248)
-* [Swagger](45.146.166.248/swagger/schema)
+* [RGAR Music](45.146.166.248:3080)
+* [Swagger](45.146.166.248:8000/swagger/schema)
 
 ## Контактные данные
 

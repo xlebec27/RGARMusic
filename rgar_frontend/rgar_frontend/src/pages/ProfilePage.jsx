@@ -17,7 +17,7 @@ export function ProfilePage(params) {
     useEffect(() => {
         async function load_profile() {
             try {
-                const response = await axios.get("http://localhost:8000/api/user/profile/" + localStorage.getItem("userID") + "/",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/profile/" + localStorage.getItem("userID") + "/",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }

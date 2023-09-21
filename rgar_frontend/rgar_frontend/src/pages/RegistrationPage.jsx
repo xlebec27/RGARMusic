@@ -47,14 +47,14 @@ export function RegistrationPage() {
             console.log(JSON.stringify({ email, username, password, img }))
 
             console.log(process.env.REACT_APP_API_URL);
-            const response = await axios.post("http://localhost:8000/auth/users/",
+            const response = await axios.post(import.meta.env.VITE_API_URL + "auth/users/",
                 { email: email, username: username, password: password, image: img },
                 {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 }
             );
             console.log(JSON.stringify(response.data));
-            const login = await axios.post("http://localhost:8000/auth/jwt/create/",
+            const login = await axios.post(import.meta.env.VITE_API_URL + "auth/jwt/create/",
                 JSON.stringify({ email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' }
@@ -63,7 +63,7 @@ export function RegistrationPage() {
             console.log(JSON.stringify(response.data));
             localStorage.setItem('refreshToken', response.data.refresh)
             localStorage.setItem('accessToken', response.data.access)
-            const profileData = await axios.get("http://localhost:8000/auth/users/me/",
+            const profileData = await axios.get(import.meta.env.VITE_API_URL + "auth/users/me/",
                 {
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${login.data.access}` }
                 }

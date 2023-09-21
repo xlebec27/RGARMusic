@@ -50,7 +50,7 @@ export function AddPlaylistModal(props) {
 
     async function postPlaylist() {
         try {
-            const response = await axios.post("http://localhost:8000/api/user/create/playlist/",
+            const response = await axios.post(import.meta.env.VITE_API_URL + "api/user/create/playlist/",
                 { name: name, cover: img },
                 {
                     headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

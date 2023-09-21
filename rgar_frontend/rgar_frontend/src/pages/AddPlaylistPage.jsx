@@ -40,7 +40,7 @@ export function AddPlaylistPage() {
         try {
             console.log(JSON.stringify({ name, genre, img }))
 
-            const response = await axios.post("http://localhost:8000/api/admin/create-artist/",
+            const response = await axios.post(import.meta.env.VITE_API_URL + "api/admin/create-artist/",
                 { name: name, genre: genre, picture: img },
                 {
                     headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

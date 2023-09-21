@@ -35,7 +35,7 @@ export function PlaylistPage(params) {
     useEffect(() => {
         async function load_playlist() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/user/playlist/${playlistID}/`,);
+                const response = await axios.get(import.meta.env.VITE_API_URL + `api/user/playlist/${playlistID}/`,);
                 setPlaylist(response.data);
                 setIDList(response.data.track.map(a => a.id));
                 setLoaded(true)
@@ -68,7 +68,7 @@ export function PlaylistPage(params) {
                     </Col>
                     <Col>
                         <div>
-                            <h4><LikeButton url={'http://localhost:8000/api/user/like/playlist/'} body={{id: playlistID}} /></h4>
+                            <h4><LikeButton url={import.meta.env.VITE_API_URL + 'api/user/like/playlist/'} body={{id: playlistID}} /></h4>
                         </div>
                     </Col>
                     <Col>

@@ -37,7 +37,7 @@ export function ArtistPage(params){
     useEffect(() => {
         async function load_artist(){
             try {
-                const response = await axios.get(`http://localhost:8000/api/user/artist/${artistID}/`,);
+                const response = await axios.get(import.meta.env.VITE_API_URL + `api/user/artist/${artistID}/`,);
                 setArtist(response.data);
                 setIDList(response.data.track_list.map(a => a.id));
                 setLoaded(true)
@@ -82,7 +82,7 @@ export function ArtistPage(params){
                     </Col>
                     <Col>
                         <div>
-                            <h4><LikeButton url={'http://localhost:8000/api/user/like/artist/'} body={{id: artistID}} /></h4>
+                            <h4><LikeButton url={import.meta.env.VITE_API_URL + 'api/user/like/artist/'} body={{id: artistID}} /></h4>
                         </div>
                     </Col>
                     <Col>

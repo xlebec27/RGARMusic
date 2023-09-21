@@ -64,7 +64,7 @@ export function LikeTagsModal({navTo, buttonText}) {
         try {
             console.log(status);
             if (status) {
-                const response = await axios.post("http://localhost:8000/api/user/like/tag/",
+                const response = await axios.post(import.meta.env.VITE_API_URL + "api/user/like/tag/",
                     JSON.stringify({ id }),
                     {
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
@@ -74,7 +74,7 @@ export function LikeTagsModal({navTo, buttonText}) {
                 setLikedTags(likedTags => [...likedTags, response.data])
             }
             else {
-                const response = await axios.delete("http://localhost:8000/api/user/like/tag/",
+                const response = await axios.delete(import.meta.env.VITE_API_URL + "api/user/like/tag/",
 
                     {
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

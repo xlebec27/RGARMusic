@@ -17,32 +17,32 @@ export function SearchPage(params) {
 
     async function onSearch(searchValue){
         try {
-            const artists = await axios.get("http://localhost:8000/api/user/artists/search/?s=" + searchValue);
+            const artists = await axios.get(import.meta.env.VITE_API_URL + "api/user/artists/search/?s=" + searchValue);
             setArtists(artists.data);
         } catch (error) {
             console.log(error);
         }
         try {
-            const albums = await axios.get("http://localhost:8000/api/user/albums/search/?s=" + searchValue);
+            const albums = await axios.get(import.meta.env.VITE_API_URL + "api/user/albums/search/?s=" + searchValue);
             setAlbums(albums.data);
             console.log(albums.data);
         } catch (error) {
             console.log(error);
         }
         try {
-            const playlists = await axios.get("http://localhost:8000/api/user/playlists/search/?s=" + searchValue);
+            const playlists = await axios.get(import.meta.env.VITE_API_URL + "api/user/playlists/search/?s=" + searchValue);
             setPlaylists(playlists.data);
         } catch (error) {
             console.log(error);
         }
         try {
-            const users = await axios.get("http://localhost:8000/api/user/users/search/?s=" + searchValue);
+            const users = await axios.get(import.meta.env.VITE_API_URL + "api/user/users/search/?s=" + searchValue);
             setUsers(users.data);
         } catch (error) {
             console.log(error);
         }
         try {
-            const tracks = await axios.get("http://localhost:8000/api/user/tracks/search/?s=" + searchValue);
+            const tracks = await axios.get(import.meta.env.VITE_API_URL + "api/user/tracks/search/?s=" + searchValue);
             setTracks(tracks.data);
         } catch (error) {
             console.log(error);

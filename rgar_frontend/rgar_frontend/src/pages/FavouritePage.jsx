@@ -16,21 +16,21 @@ export function FavouritePage(params) {
         console.log("data load");
         async function load_data() {
             try {
-                const artists = await axios.get("http://localhost:8000/api/user/like/artist/",
+                const artists = await axios.get(import.meta.env.VITE_API_URL + "api/user/like/artist/",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
                 );
                 console.log(artists.data);
                 setArtists(artists.data);
-                const albums = await axios.get("http://localhost:8000/api/user/like/album/",
+                const albums = await axios.get(import.meta.env.VITE_API_URL + "api/user/like/album/",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
                 );
                 console.log(albums.data);
                 setAlbums(albums.data);
-                const playlists = await axios.get("http://localhost:8000/api/user/like/playlist/",
+                const playlists = await axios.get(import.meta.env.VITE_API_URL + "api/user/like/playlist/",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
@@ -49,7 +49,7 @@ export function FavouritePage(params) {
         var favourite = []
         favourite.push(albums?.map(album => {
             return <Col span={4}><CoverCard
-                img={"http://localhost:8000/" + album.cover}
+                img={import.meta.env.VITE_API_URL +  + album.cover}
                 id={album.id}
                 name={album.name} desc={album.artist[0].name} type={"album"} className="playlist-card"/>
             </Col>
@@ -73,7 +73,7 @@ export function FavouritePage(params) {
         var favourite = []
         favourite.push(artists?.map(artist => {
             return <Col span={4} key={artist.name}><ArtistCard
-                img={"http://localhost:8000/" + artist.picture}
+                img={import.meta.env.VITE_API_URL +  + artist.picture}
                 id={artist.name}
                 name={artist.name} className="playlist-card" />
             </Col>

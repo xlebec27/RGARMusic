@@ -5,6 +5,6 @@ import { useContext } from 'react';
 
 export function playSong(id){
 
-    link = "http://localhost:8000/" + getTrackFile(id);
+    link = import.meta.env.VITE_API_URL + getTrackFile(id);
 
 }

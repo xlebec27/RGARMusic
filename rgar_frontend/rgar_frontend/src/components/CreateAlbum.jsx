@@ -94,7 +94,7 @@ export function CreateAlbum() {
     useEffect(() => {
         async function load_data() {
             try {
-                const getArtists = await axios.get("http://localhost:8000/api/user/artists/");
+                const getArtists = await axios.get(import.meta.env.VITE_API_URL + "api/user/artists/");
                 var artistsResponse = getArtists.data.map(artist => { return { value: artist.name } })
                 setAllArtists(artistsResponse)
             }
@@ -102,7 +102,7 @@ export function CreateAlbum() {
                 console.error(error);
             }
             try {
-                const getTags = await axios.get("http://localhost:8000/api/user/all-tags/");
+                const getTags = await axios.get(import.meta.env.VITE_API_URL + "api/user/all-tags/");
                 var tagsResponse = getTags.data.map(tag => { return { label: tag.name, value: tag.id } })
                 setAllTags(tagsResponse)
             }
@@ -136,7 +136,7 @@ export function CreateAlbum() {
             formData.append(`track_set[${i}]link`, album.track_set[i].link);
         }
         try {
-            const response = await axios.post("http://localhost:8000/api/admin/create-album/",
+            const response = await axios.post(import.meta.env.VITE_API_URL + "api/admin/create-album/",
                 formData,
                 {
                     headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

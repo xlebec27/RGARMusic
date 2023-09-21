@@ -17,7 +17,7 @@ export function HomePage(){
     useEffect(() => {
         async function load_homepage() {
             try {
-                const response = await axios.get("http://localhost:8000/api/user/recommend/?n=4",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/recommend/?n=4",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
@@ -29,7 +29,7 @@ export function HomePage(){
                 console.error(error);
             }
             try {
-                const response = await axios.get("http://localhost:8000/api/user/albums/get-last/?n=4",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/albums/get-last/?n=4",
                 );
                 console.log(response.data);
                 setLatest(response.data);
@@ -46,7 +46,7 @@ export function HomePage(){
         var albums = recs?.map(album => {
             return <Col span={4} key={album.id}><CoverCard
                 id={album.id}
-                img={"http://localhost:8000/" + album.cover}
+                img={import.meta.env.VITE_API_URL + album.cover}
                 name={album.name} desc={album.artist[0].name} type={"album"}/>
             </Col>
         }

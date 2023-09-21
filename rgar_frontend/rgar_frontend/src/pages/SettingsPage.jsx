@@ -53,7 +53,7 @@ export function SettingsPage() {
             if (selectedFile != undefined){
                 body.append('image', selectedFile)
             }
-            const response = await axios.patch("http://localhost:8000/api/user/my-profile/",
+            const response = await axios.patch(import.meta.env.VITE_API_URL + "api/user/my-profile/",
                 body,
                 {
                     headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

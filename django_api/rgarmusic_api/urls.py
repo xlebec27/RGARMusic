@@ -39,9 +39,9 @@ urlpatterns = [
     path('admin/users/', allUser.as_view()), # Все пользователи
     path('admin/create-album/', AlbumCreateView.as_view()), # Создание альбома
     path('admin/create-artist/', CreateArtist.as_view()), # Создание артиста
-    path('admin/delete-album/', AlbumDeleteView.as_view()),
-    path('admin/delete-artist/', ArtistDeleteView.as_view()),
-    path('admin/delete-tag/', TagDeleteView.as_view()),
+    path('admin/delete-album/<int:pk>/', AlbumDeleteView.as_view()),
+    path('admin/delete-artist/<str:pk>/', ArtistDeleteView.as_view()),
+    path('admin/delete-tag/<int:pk>/', TagDeleteView.as_view()),
 
     path('user/artists/search/', ArtistSearch.as_view()), # Поиск артиста
     path('user/albums/search/', AlbumSearch.as_view()), # Поиск альбома

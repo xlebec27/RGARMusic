@@ -9,7 +9,7 @@ export function ArtistCard(props) {
     let navigate = useNavigate();
 
     return (
-        <Card className={"card-artist " + props.className} cover={<img alt="img artist" src={props.img} style={{ borderRadius: "50%" }} />}
+        <Card className={"card-artist " + props.className} cover={<Avatar alt="img artist" src={props.img} style={{ width: "100%", height: "100%",aspectRatio: '1/1' }} />}
             style={{ cursor: "pointer" }}
             onClick={() => navigate('/artist/' + props.id)}>
             <Meta title={props.name} />

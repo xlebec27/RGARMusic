@@ -19,17 +19,17 @@ export function LoginPage() {
     console.log(JSON.stringify({ email, password }))
     if (localStorage.getItem("refreshToken") !== null) {
       try {
-        const response = await axios.post("http://localhost:8000/auth/jwt/refresh/",
+        const response = await axios.post(import.meta.env.VITE_API_URL + "auth/jwt/refresh/",
           localStorage.getItem("refreshToken"),
           {
             headers: { 'Content-Type': 'application/json' }
           }
         );
         localStorage.setItem('refreshToken', response?.data?.refresh)
-        localStorage.setItem('accessToken', response?.data?.access)  
-        const profileData = await axios.get("http://localhost:8000/auth/users/me/",
+        localStorage.setItem('accessToken', response?.data?.access)
+        const profileData = await axios.get(import.meta.env.VITE_API_URL + "auth/users/me/",
           {
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`}
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
           }
         );
         localStorage.setItem('userID', profileData?.data?.id)
@@ -37,23 +37,23 @@ export function LoginPage() {
       } catch (error) {
         console.error(error);
         localStorage.clear()
-        const response = await axios.post("http://localhost:8000/auth/jwt/create/",
+        const response = await axios.post(import.meta.env.VITE_API_URL + "auth/jwt/create/",
           { email, password },
           {
             headers: { 'Content-Type': 'application/json' }
           }
         );
         localStorage.setItem('refreshToken', response.data.refresh)
-        localStorage.setItem('accessToken', response.data.access)  
-        const profileData = await axios.get("http://localhost:8000/auth/users/me/",
+        localStorage.setItem('accessToken', response.data.access)
+        const profileData = await axios.get(import.meta.env.VITE_API_URL + "auth/users/me/",
           {
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`}
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
           }
         );
         localStorage.setItem('userID', profileData?.data?.id)
-        const adminData = await axios.get("http://localhost:8000/api/user/is-admin/",
+        const adminData = await axios.get(import.meta.env.VITE_API_URL + "api/user/is-admin/",
           {
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${response.data.access}`}
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${response.data.access}` }
           }
         );
         localStorage.setItem('isAdmin', adminData?.data?.is_admin)
@@ -62,7 +62,7 @@ export function LoginPage() {
     }
     else {
       try {
-        const response = await axios.post("http://localhost:8000/auth/jwt/create/",
+        const response = await axios.post(import.meta.env.VITE_API_URL + "auth/jwt/create/",
           { email, password },
           {
             headers: { 'Content-Type': 'application/json' }
@@ -70,16 +70,16 @@ export function LoginPage() {
         );
         console.log(JSON.stringify(response.data));
         localStorage.setItem('refreshToken', response.data.refresh)
-        localStorage.setItem('accessToken', response.data.access)  
-        const profileData = await axios.get("http://localhost:8000/auth/users/me/",
+        localStorage.setItem('accessToken', response.data.access)
+        const profileData = await axios.get(import.meta.env.VITE_API_URL + "auth/users/me/",
           {
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${response.data.access}`}
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${response.data.access}` }
           }
         );
         localStorage.setItem('userID', profileData?.data?.id)
-        const adminData = await axios.get("http://localhost:8000/api/user/is-admin/",
+        const adminData = await axios.get(import.meta.env.VITE_API_URL + "api/user/is-admin/",
           {
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${response.data.access}`}
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${response.data.access}` }
           }
         );
         localStorage.setItem('isAdmin', adminData?.data?.is_admin)
@@ -87,7 +87,7 @@ export function LoginPage() {
       } catch (error) {
         console.error(error);
       }
-      
+
     }
 
   }
@@ -98,11 +98,11 @@ export function LoginPage() {
   }
 
   return (
-    <Row justify="center" style={{width:"100%"}} gutter={[16, 16]} size="large">
+    <Row justify="center" style={{ width: "100%" }} gutter={[16, 16]} size="large">
       <Space direction="vertical" style={{ textAlign: "center", paddingTop: "0px" }}>
-        <h1 style={{paddingTop: "20px" }}>Login</h1>
+        <h1 style={{ paddingTop: "20px" }}>Login</h1>
         <Input
-          placeholder="Enter your email" 
+          placeholder="Enter your email"
           onChange={(e) => { setEmail(e.target.value) }}
           size='100%'
         />
@@ -110,8 +110,8 @@ export function LoginPage() {
 
 
         <Button type="primary" onClick={login} shape="round" style={{ width: '50%' }}>Login</Button>
-          <br></br>
-          Don't have an account?
+        <br></br>
+        Don't have an account?
         <Button onClick={register} style={{ width: '50%' }}>
           Register
         </Button>

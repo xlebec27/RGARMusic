@@ -12,7 +12,7 @@ export function AddTagPage() {
 
     async function postTag() {
         try {
-            const response = await axios.post("http://localhost:8000/api/admin/tags/",
+            const response = await axios.post(import.meta.env.VITE_API_URL + "api/admin/tags/",
                 { name: name },
                 {
                     headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

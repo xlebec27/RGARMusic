@@ -14,7 +14,7 @@ export function LikeTagsPage() {
         console.log("tags");
         async function load_tags(){
             try {
-                const response = await axios.get("http://localhost:8000/api/user/all-tags/",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/all-tags/",
                     {
                         headers: { 'Content-Type': 'multipart/form-data' },
                     }
@@ -26,7 +26,7 @@ export function LikeTagsPage() {
                 console.error(error);
             }
             try {
-                const response = await axios.get("http://localhost:8000/api/user/profile/"+ localStorage.getItem("userID") +"/",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/profile/"+ localStorage.getItem("userID") +"/",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
@@ -48,7 +48,7 @@ export function LikeTagsPage() {
         try {
             console.log(status);
             if (status) {
-                const response = await axios.post("http://localhost:8000/api/user/like/tag/",
+                const response = await axios.post(import.meta.env.VITE_API_URL + "api/user/like/tag/",
                     JSON.stringify({ id }),
                     {
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
@@ -58,7 +58,7 @@ export function LikeTagsPage() {
                 setLikedTags(likedTags => [...likedTags, response.data])
             }
             else {
-                const response = await axios.delete("http://localhost:8000/api/user/like/tag/",
+                const response = await axios.delete(import.meta.env.VITE_API_URL + "api/user/like/tag/",
                     
                     {
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

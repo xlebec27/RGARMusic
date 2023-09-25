@@ -27,7 +27,7 @@ export function AddToPlaylistModal(props) {
     useEffect(() => {
         async function load_playlists() {
             try {
-                const response = await axios.get("http://localhost:8000/api/user/user-playlist/",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/user-playlist/",
                     {
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
@@ -46,7 +46,7 @@ export function AddToPlaylistModal(props) {
     const update_playlist = async (track_id, playlist_id) => {
         console.log(track_id);
         try {
-            await axios.put("http://localhost:8000/api/user/playlist/update/",
+            await axios.put(import.meta.env.VITE_API_URL + "api/user/playlist/update/",
                 { track_id: track_id, playlist_id: playlist_id },
                 {
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },

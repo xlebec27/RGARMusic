@@ -77,7 +77,7 @@ class Track(models.Model):
     duration = models.CharField(max_length=5)
     link = models.FileField(upload_to='static/track/', )
     streams = models.ManyToManyField(UserData, through='Stream')
-    album = models.ForeignKey(Album, on_delete=models.DO_NOTHING)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
     listens = models.IntegerField(default=0)
 
 

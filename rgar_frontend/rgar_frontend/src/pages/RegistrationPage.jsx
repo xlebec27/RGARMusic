@@ -2,7 +2,7 @@ import { Row, Col, Space, Input, Avatar, Upload, Button } from 'antd'
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from "axios";
-import { LikeTagsModal } from '../components/LikeTagsModal';
+// import { LikeTagsModal } from '../components/LikeTagsModal';
 
 export function RegistrationPage() {
 
@@ -45,30 +45,28 @@ export function RegistrationPage() {
     const register = async () => {
         try {
             console.log(JSON.stringify({ email, username, password, img }))
-
-            console.log(process.env.REACT_APP_API_URL);
-            const response = await axios.post("http://localhost:8000/auth/users/",
+            const response = await axios.post(import.meta.env.VITE_API_URL + "auth/users/",
                 { email: email, username: username, password: password, image: img },
                 {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 }
             );
             console.log(JSON.stringify(response.data));
-            const login = await axios.post("http://localhost:8000/auth/jwt/create/",
+            const login = await axios.post(import.meta.env.VITE_API_URL + "auth/jwt/create/",
                 JSON.stringify({ email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' }
                 }
             );
             console.log(JSON.stringify(response.data));
-            localStorage.setItem('refreshToken', response.data.refresh)
-            localStorage.setItem('accessToken', response.data.access)
-            const profileData = await axios.get("http://localhost:8000/auth/users/me/",
+            localStorage.setItem('refreshToken', login.data.refresh)
+            localStorage.setItem('accessToken', login.data.access)
+            const profileData = await axios.get(import.meta.env.VITE_API_URL + "auth/users/me/",
                 {
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${login.data.access}` }
                 }
             );
-            localStorage.setItem('userID', profileData?.data?.id)
+            localStorage.setItem('userID', profileData.data.id)
             console.log(JSON.stringify(login.data));
             navigate("/like-tags");
 
@@ -96,7 +94,8 @@ export function RegistrationPage() {
                 </Upload>
                 {selectedFile && <Avatar src={preview} size={192} />}
                 <Input.Password placeholder="input password" onChange={(e) => { setPassword(e.target.value) }} />
-                <LikeTagsModal navTo={"/home"} buttonText={"Register"}/>
+                <Button type="primary" onClick={register} shape="round" style={{ width: '50%' }}>Register</Button>
+                {/* <LikeTagsModal navTo={"/home"} buttonText={"Register"} onClick={register}/> */}
                 <Link to='/login'>Back to login page</Link>
             </Space>
 

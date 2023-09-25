@@ -12,24 +12,27 @@ export function HomePage(){
     const [queue, setQueue] = useContext(QueueContext);
 
     const [recs, setRecs] = useState([]);
+    const [noRecs, setNoRecs] = useState(true);
     const [latest, setLatest] = useState([]);
 
     useEffect(() => {
         async function load_homepage() {
             try {
-                const response = await axios.get("http://localhost:8000/api/user/recommend/?n=4",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/recommend/?n=4",
                     {
                         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` },
                     }
                 );
                 console.log(response.data);
                 setRecs(response.data);
+                setNoRecs(false)
             }
             catch (error) {
                 console.error(error);
+                setNoRecs(true);
             }
             try {
-                const response = await axios.get("http://localhost:8000/api/user/albums/get-last/?n=4",
+                const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/albums/get-last/?n=4",
                 );
                 console.log(response.data);
                 setLatest(response.data);
@@ -46,7 +49,7 @@ export function HomePage(){
         var albums = recs?.map(album => {
             return <Col span={4} key={album.id}><CoverCard
                 id={album.id}
-                img={"http://localhost:8000/" + album.cover}
+                img={import.meta.env.VITE_API_URL + album.cover}
                 name={album.name} desc={album.artist[0].name} type={"album"}/>
             </Col>
         }
@@ -80,7 +83,7 @@ export function HomePage(){
             </Row>
             <h3>Recommended</h3>
             <Row justify="space-around">
-                {renderRecs()}
+                {noRecs ? <h4>Set Preferred Tags in Settings</h4>: renderRecs()}
             </Row>
             <h3>Latest</h3>
             <Row justify="space-around">

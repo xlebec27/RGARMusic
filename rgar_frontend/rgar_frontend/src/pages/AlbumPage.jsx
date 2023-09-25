@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useRef, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { QueueContext, SongContext } from '../App'
+import { DeleteButton } from '../components/DeleteButton'
 
 export function AlbumPage(params) {
 
@@ -35,7 +36,7 @@ export function AlbumPage(params) {
     useEffect(() => {
         async function load_album() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/user/album/${albumID}/`,);
+                const response = await axios.get(import.meta.env.VITE_API_URL + `api/user/album/${albumID}/`,);
                 setAlbum(response.data);
                 setIDList(response.data.track_set.map(a => a.id));
                 setLoaded(true)
@@ -68,7 +69,7 @@ export function AlbumPage(params) {
                     </Col>
                     <Col>
                         <div>
-                            <h4><LikeButton url={'http://localhost:8000/api/user/like/album/'} body={{id: albumID}} /></h4>
+                            <h4><LikeButton url={import.meta.env.VITE_API_URL + '/api/user/like/album/'} body={{id: albumID}} /></h4>
                         </div>
                     </Col>
                     <Col>
@@ -77,6 +78,10 @@ export function AlbumPage(params) {
                     <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={copyToClip}><FontAwesomeIcon icon={faLink} /> Share</h4>
                     </Col>
+                    {(localStorage.getItem('isAdmin')) ?
+                        <Col>
+                            <h4><DeleteButton url={import.meta.env.VITE_API_URL + 'api/admin/delete-album/'} id={albumID} /> </h4>
+                        </Col> : <></>}
                 </Row>
                 <TrackList songs={album?.track_set} album={true} />
             </Space>

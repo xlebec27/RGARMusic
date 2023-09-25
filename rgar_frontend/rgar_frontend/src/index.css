@@ -1,0 +1,49 @@
+@font-face {
+  font-family: Rubic;
+  /* declare weights giving two values to specify a range */
+  font-weight: 300 900;
+  src: url(./assets/fonts/Rubik-VariableFont_wght.ttf);
+}
+
+*{ 
+  font-family: 'Rubic', sans-serif;
+  font-size: 100%;
+}
+
+body, html { 
+  font-family: 'Rubic', sans-serif;
+  font-size: 100%;
+}
+
+p{
+  font-family: 'Rubic', Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-weight: 900;
+  font-size: 4vw;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 3vw;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: 2vw;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: 1vw;
+}
+
+a:link {color: #BE3455;}  
+a:visited {color: #BE3455}  
+a:hover {color: #be4f69}  
+a:active {color: #bd1439}  
+
+.ant-image-preview-operations-operation:not(:first-child) {
+  display: none;
+}

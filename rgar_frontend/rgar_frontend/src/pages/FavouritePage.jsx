@@ -49,7 +49,7 @@ export function FavouritePage(params) {
         var favourite = []
         favourite.push(albums?.map(album => {
             return <Col span={4}><CoverCard
-                img={import.meta.env.VITE_API_URL +  + album.cover}
+                img={import.meta.env.VITE_API_URL + album.cover}
                 id={album.id}
                 name={album.name} desc={album.artist[0].name} type={"album"} className="playlist-card"/>
             </Col>
@@ -73,7 +73,7 @@ export function FavouritePage(params) {
         var favourite = []
         favourite.push(artists?.map(artist => {
             return <Col span={4} key={artist.name}><ArtistCard
-                img={import.meta.env.VITE_API_URL +  + artist.picture}
+                img={import.meta.env.VITE_API_URL + artist.picture}
                 id={artist.name}
                 name={artist.name} className="playlist-card" />
             </Col>

@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useRef, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { QueueContext, SongContext } from '../App'
+import { DeleteButton } from '../components/DeleteButton'
 
 export function AlbumPage(params) {
 
@@ -77,6 +78,10 @@ export function AlbumPage(params) {
                     <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={copyToClip}><FontAwesomeIcon icon={faLink} /> Share</h4>
                     </Col>
+                    {(localStorage.getItem('isAdmin')) ?
+                        <Col>
+                            <h4><DeleteButton url={import.meta.env.VITE_API_URL + 'api/admin/delete-album/'} id={albumID} /> </h4>
+                        </Col> : <></>}
                 </Row>
                 <TrackList songs={album?.track_set} album={true} />
             </Space>

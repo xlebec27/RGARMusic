@@ -1,4 +1,6 @@
 @startuml
+skinparam defaultFontName Times New Roman
+skinparam defaultFontSize 14
 state "Запрос на музыку" as State1
 state "Проверка данных" as State2
 state "'По запросу ничего не найдено'" as State3

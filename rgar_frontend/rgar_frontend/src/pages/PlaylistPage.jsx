@@ -1,4 +1,4 @@
-import { Space, Row, Col, Image, message } from 'antd'
+import { Space, Row, Col, Avatar, message } from 'antd'
 import { TrackList } from '../components/TrackList'
 import { Link, useParams } from "react-router-dom"
 import "../assets/Pages.css"
@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useRef, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { QueueContext, SongContext } from '../App'
+import { DeleteButton } from '../components/DeleteButton'
 
 export function PlaylistPage(params) {
 
@@ -54,7 +55,8 @@ export function PlaylistPage(params) {
                     justify="start"
                     gutter={16}>
                     <Col span={6}>
-                        <Image src={playlist?.cover} width={"90%"} />
+                        <Avatar src={playlist?.cover}
+                            shape="square" size="large" style={{width: "90%", height: "90%", aspectRatio: '1/1'}}/>
                     </Col >
                     <Col span={18}>
                         <h1>{playlist?.name}</h1>
@@ -74,15 +76,13 @@ export function PlaylistPage(params) {
                     <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={() => { var newQueue = queue.slice(0, song + 1); newQueue.push(...IDList, ...queue.slice(song + 1)); setQueue(newQueue) }}><FontAwesomeIcon icon={faBarsStaggered} /> Add to queue</h4>
                     </Col>
-                    {/* <Col>
-                        <h4 style={{ cursor: "pointer" }}><FontAwesomeIcon icon={faSquarePlus} /> Add to Playlist</h4>
-                    </Col> */}
                     <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={copyToClip}><FontAwesomeIcon icon={faLink} /> Share</h4>
                     </Col>
-                    {/* <Col>
-                        <h4 style={{ cursor: "pointer" }}><ReportModal /></h4>
-                    </Col> */}
+                    {(localStorage.getItem('isAdmin') || playlist?.user?.id == localStorage.getItem('userID')) ?
+                        <Col>
+                            <h4><DeleteButton url={import.meta.env.VITE_API_URL + 'api/user/playlist/delete/'} id={playlist.id} /> </h4>
+                        </Col> : <></>}
                 </Row>
                 <TrackList songs={playlist?.track} album={true} />
             </Space>

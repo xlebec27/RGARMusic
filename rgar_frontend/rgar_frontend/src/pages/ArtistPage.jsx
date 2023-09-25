@@ -1,4 +1,4 @@
-import {Space, Row, Col, Image, Divider, message} from 'antd'
+import { Space, Row, Col, Image, Divider, message, Avatar } from 'antd'
 import { TrackList } from '../components/TrackList'
 import "../assets/Pages.css"
 import { CoverCard } from '../components/CoverCard'
@@ -9,10 +9,11 @@ import { LikeButton } from '../components/LikeButton'
 import { faCirclePlay, faBarsStaggered, faSquarePlus, faLink, faFlag } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QueueContext, SongContext } from '../App'
+import { DeleteButton } from '../components/DeleteButton'
 
 
 
-export function ArtistPage(params){
+export function ArtistPage(params) {
 
     const [copySuccess, setCopySuccess] = useState("")
     const textAreaRef = useRef(null)
@@ -35,7 +36,7 @@ export function ArtistPage(params){
     }
 
     useEffect(() => {
-        async function load_artist(){
+        async function load_artist() {
             try {
                 const response = await axios.get(import.meta.env.VITE_API_URL + `api/user/artist/${artistID}/`,);
                 setArtist(response.data);
@@ -62,27 +63,27 @@ export function ArtistPage(params){
     }
 
     if (loaded) {
-        return(
+        return (
             <Space direction="vertical" className="header-img-name">
                 <Row align="bottom"
                     justify="start"
-                    gutter={16} > 
+                    gutter={16} >
                     <Col span={6}>
-                        <Image src={artist?.picture}
-                        style={{overflow: "hidden"}}/>
-                    </Col >     
+                        <Avatar src={artist?.picture}
+                            shape="square" size="large" style={{ width: "100%", height: "100%", aspectRatio: '1/1' }} />
+                    </Col >
                     <Col span={18} align='bottom'>
                         <h1>{artist?.name}</h1>
-                    </Col> 
+                    </Col>
                 </Row>
                 <Divider></Divider>
                 <Row gutter={16} align="bottom" justify="start">
                     <Col>
-                        <h4><FontAwesomeIcon icon={faCirclePlay} onClick={() => {setQueue(IDList); setSong(0)}} style={{ cursor: "pointer" }}/></h4>
+                        <h4><FontAwesomeIcon icon={faCirclePlay} onClick={() => { setQueue(IDList); setSong(0) }} style={{ cursor: "pointer" }} /></h4>
                     </Col>
                     <Col>
                         <div>
-                            <h4><LikeButton url={import.meta.env.VITE_API_URL + 'api/user/like/artist/'} body={{id: artistID}} /></h4>
+                            <h4><LikeButton url={import.meta.env.VITE_API_URL + 'api/user/like/artist/'} body={{ id: artistID }} /></h4>
                         </div>
                     </Col>
                     <Col>
@@ -91,9 +92,14 @@ export function ArtistPage(params){
                     <Col>
                         <h4 style={{ cursor: "pointer" }} onClick={copyToClip}><FontAwesomeIcon icon={faLink} /> Share</h4>
                     </Col>
+                    {(localStorage.getItem('isAdmin')) ?
+                        <Col>
+                            <h4><DeleteButton url={import.meta.env.VITE_API_URL + 'api/admin/delete-artist/'} id={artistID} /> </h4>
+                        </Col> : <></>}
+
                 </Row>
                 <Divider orientation="left">Popular Tracks</Divider>
-                    <TrackList songs={artist?.track_list} album={false}/>
+                <TrackList songs={artist?.track_list} album={false} />
                 <Divider orientation="left">Discography</Divider>
                 <Row justify="space-around" type="flex">
                     {renderAlbums()}
@@ -101,8 +107,8 @@ export function ArtistPage(params){
             </Space>
         )
     }
-    else{
+    else {
         return <> loading </>
     }
-    
+
 }

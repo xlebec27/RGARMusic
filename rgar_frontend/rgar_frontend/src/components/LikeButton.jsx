@@ -73,6 +73,7 @@ export function LikeButton(props) {
             setLiked(!liked);
             setClicked(false);
         }}
+        style={{ cursor: "pointer" }}
         />
     );
 };

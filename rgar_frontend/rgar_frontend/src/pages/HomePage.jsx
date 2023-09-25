@@ -12,6 +12,7 @@ export function HomePage(){
     const [queue, setQueue] = useContext(QueueContext);
 
     const [recs, setRecs] = useState([]);
+    const [noRecs, setNoRecs] = useState(true);
     const [latest, setLatest] = useState([]);
 
     useEffect(() => {
@@ -24,9 +25,11 @@ export function HomePage(){
                 );
                 console.log(response.data);
                 setRecs(response.data);
+                setNoRecs(false)
             }
             catch (error) {
                 console.error(error);
+                setNoRecs(true);
             }
             try {
                 const response = await axios.get(import.meta.env.VITE_API_URL + "api/user/albums/get-last/?n=4",
@@ -80,7 +83,7 @@ export function HomePage(){
             </Row>
             <h3>Recommended</h3>
             <Row justify="space-around">
-                {renderRecs()}
+                {noRecs ? <h4>Set Preferred Tags in Settings</h4>: renderRecs()}
             </Row>
             <h3>Latest</h3>
             <Row justify="space-around">

@@ -1,4 +1,6 @@
 @startuml
+skinparam defaultFontName Times New Roman
+skinparam defaultFontSize 14
 skinparam actorStyle awesome
 "Администратор" as Admin
 "Авторизованный пользователь" as User

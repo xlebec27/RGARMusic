@@ -13,10 +13,6 @@
 * [Видео по серверной части](https://drive.google.com/file/d/1ksLO7hAWqqrPOpKk56nSDq015h9W5ilp/view?usp=sharing)
 * [Видео по клиентской части](https://drive.google.com/file/d/1x4x8o3oupExMGFNqm81CUp8UGbVN1YJl/view?usp=sharing)
 
-## Веб сайт
-* [RGAR Music](http://45.146.166.248:3000)
-* [Swagger](http://45.146.166.248:8000/swagger/schema)
-
 ## Контактные данные
 
 **Аббасов Руслан Самирович (team lead)**
@@ -39,4 +35,9 @@
 * Телеграм: [@AgentRomanovsky](https://t.me/AgentRomanovsky)
 * VK: [@agentromanovsky](https://vk.com/agentromanovsky)
 
-
+**Скрины страниц приложения**
+![Рекомендации](https://github.com/user-attachments/assets/62bf7eb0-f78c-4326-9050-9c7fd758ef2b)
+![Избранное](https://github.com/user-attachments/assets/74019124-f2e2-4207-93c5-42808d517733)
+![Поиск](https://github.com/user-attachments/assets/28f26a3d-24de-4aa5-b079-4ad910ce5db1)
+![Профиль пользователя](https://github.com/user-attachments/assets/22ffbfb2-f1e4-4c9b-a27e-6fd8e1872b79)
+![Админ панель добавления альбома](https://github.com/user-attachments/assets/9b0fa57c-1566-47c6-9d1f-ce5bf47f2559)
